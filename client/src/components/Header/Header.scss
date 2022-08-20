@@ -1,0 +1,60 @@
+.header{
+    border-bottom: 0.01rem solid #dadada;
+    .header-container{
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;   
+        align-items: center; 
+    
+        width: 75%;
+        margin: 0.5rem auto;
+        font-weight: 700;
+    
+        border-bottom: 2px;
+        border-color: #000;
+        &__top-left{
+            align-items: center;
+            display: flex;
+            .logo{
+                width: 10rem;
+                height: auto;
+            }
+            .menu{
+                ul{
+                    display: flex;
+                    margin: 0;
+                    color: #000;
+                    li{
+                        margin-right: 1rem;
+                    }
+                }
+               
+            }
+        }
+        &__top-right{
+            display: flex;
+            align-items: center;
+            .search{
+                margin-right: 2rem;
+            }
+            .login{
+                border: 0.05rem solid #dadada;
+                border-radius: 1rem;
+                margin-right: 1rem;
+                font-weight: 400;
+                a{
+                    padding: 8px;
+                }
+                a:hover{
+                    color: #d45959;
+                }
+            }
+            .cart{
+                font-size: 25px;
+                color: rgb(180, 14, 14);
+                
+            }
+        }
+    
+    }
+}
