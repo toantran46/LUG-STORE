@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Header.scss';
-import { Button, Input, Tooltip } from 'antd';
+import { Input, Tooltip } from 'antd';
 import { ShoppingCartOutlined } from '@ant-design/icons';
 
 Header.propTypes = {
