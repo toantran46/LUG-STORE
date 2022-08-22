@@ -1,0 +1,82 @@
+.footer{
+    margin-top: 5px;
+    border-top: 1px solid #c6c3c3;
+    &__footer-wrapper{
+        margin-top: 20px;
+        margin-bottom: 20px;
+        &__on-top{
+            .banner-list{
+                justify-content: space-around;
+                display: flex;
+                text-align: center;
+                align-items: center;
+                .banner-item{
+                    .item{
+                        color: #a6a6a6;
+                        
+                        img{
+                            filter: grayscale(50%); 
+                            width: 95px;
+                            height: 95px;
+                        }
+                        img:hover{
+                            
+                            filter: unset;  
+                        }
+                        span{
+                            
+                            display: block;
+                        }
+                    }
+                }
+            }
+        }
+
+        &__on-bottom{
+            color: #ffffff;
+            background-color: #282828;
+            padding-top: 20px;
+            align-items: center;
+
+            font-weight: 200;
+            span{
+                font-weight: 500;
+            }
+            a:hover{
+                color: #d40c0c;
+            }
+            .infor-wrapper{
+                .infor{
+                    .infor-list{
+                        .logo{
+                            margin-bottom: 15px;
+                            img{
+                                width: 145px;
+                                height: 45px;
+                            }
+                        }
+                        .address{
+                            margin-bottom: 20px;
+                            .detail{
+                                p{
+                                    margin-bottom: unset;
+                                }
+                            }
+                        }
+                        .social{
+                            display: flex;
+                            ul{
+                                display: flex;
+                                padding-left: 10px;
+                                a{
+                                    padding: 7px;
+                                    font-size: 17px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

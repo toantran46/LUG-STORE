@@ -43,7 +43,7 @@ function Header(props) {
                     </div>
                     <div className="cart">
                         <Link to="">
-                            <Tooltip color="orange" title="Xem giỏ hàng">
+                            <Tooltip color="red" title="Xem giỏ hàng">
                                 <ShoppingCartOutlined />
                             </Tooltip>
                         </Link>
