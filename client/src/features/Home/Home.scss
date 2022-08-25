@@ -1,0 +1,42 @@
+.home-wrapper{
+    .topProducts{
+        padding-top: 10px;
+        margin-bottom: 30px;
+        .blackLine{
+            position: relative;
+            text-align: center;
+            line-height: 2.5em;
+
+            font-weight: 400;
+            font-size: 20px;
+        }
+        .blackLine::after{
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            display: block;
+
+            width: 60px;
+            height: 2px;
+            background: #000;
+            content: '';
+            margin-left: -30px;
+        }
+        .moreProducts{
+            padding-top: 10px;
+            position: relative;
+            text-align: center;
+            .btn{
+                background:-webkit-linear-gradient(top,red,#e9252c);
+                font-size: .75rem;
+                font-weight: 400;
+
+                letter-spacing: .05em;
+                transition: all .3s ease;
+                color: #fff;
+                border-radius: 0;
+            }
+        }
+
+    }
+}

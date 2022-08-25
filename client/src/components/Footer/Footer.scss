@@ -1,12 +1,17 @@
 .footer{
-    margin-top: 5px;
+    margin-top: 20px;
     border-top: 1px solid #c6c3c3;
+    div.footer__footer-wrapper:last-child{
+        background-color: #262626;
+        color: #ffff;
+    }
     &__footer-wrapper{
-        margin-top: 20px;
-        margin-bottom: 20px;
+           
         &__on-top{
+            margin: 0 auto;
+            width: 75%;
             .banner-list{
-                justify-content: space-around;
+                justify-content: space-between;
                 display: flex;
                 text-align: center;
                 align-items: center;
@@ -33,10 +38,10 @@
         }
 
         &__on-bottom{
-            color: #ffffff;
-            background-color: #282828;
             padding-top: 20px;
             align-items: center;
+            margin: 0 auto;
+            width: 75%;
 
             font-weight: 200;
             span{
@@ -46,6 +51,7 @@
                 color: #d40c0c;
             }
             .infor-wrapper{
+                display: flex;
                 .infor{
                     .infor-list{
                         .logo{
@@ -56,7 +62,7 @@
                             }
                         }
                         .address{
-                            margin-bottom: 20px;
+                            margin-bottom: 10px;
                             .detail{
                                 p{
                                     margin-bottom: unset;
@@ -73,6 +79,36 @@
                                     font-size: 17px;
                                 }
                             }
+                        }
+                    }
+                }
+                .about-us{
+                    margin-bottom: 10px;
+                }
+                .help-us{
+                    ul{
+                        padding: unset;
+                    }
+                }
+                .discount-inform{
+                    .custom-input{
+                        margin-top: 10px;
+                        display: flex;
+                        align-items: center;
+                        .input{
+                            font-size: 12px;
+                            background-color: transparent;
+                            border: solid 2px rgba(255,255,255,.5);
+                            height: 35px;
+                            border-radius: 30px;
+                            float: left;
+                            width: calc(100% - 95px);
+                            float: left;
+                            padding-left: 12px;
+                            margin-right: 10px;
+                        }
+                        .btn{
+                            border-radius: 30px;
                         }
                     }
                 }

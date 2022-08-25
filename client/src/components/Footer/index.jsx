@@ -51,9 +51,11 @@ function Footer(props) {
                         </li>
                     </ul>
                 </div>
+            </div>
+            <div className="footer__footer-wrapper">
                 <div className="footer__footer-wrapper__on-bottom">
                     <Row className='infor-wrapper'>
-                        <Col className='infor' span={6}>
+                        <Col className='infor' xs={24} sm={18} md={12} lg={6}>
                             <div className='infor-list'>
                                 <div className='logo'>
                                     <img src="https://bizweb.sapocdn.net/100/349/716/themes/849865/assets/lug-white.svg?1661144560959" alt="" />
@@ -92,7 +94,7 @@ function Footer(props) {
                                 </div>
                             </div>
                         </Col>
-                        <Col className='about-us' span={6}>
+                        <Col className='about-us' xs={24} sm={18} md={12} lg={6}>
                             <span>VỀ CHÚNG TÔI</span>
                             <div className="infor">
                                 <a href="">Giới thiệu về LUG</a>
@@ -104,27 +106,35 @@ function Footer(props) {
                                 <a href="">Cửa hàng</a>
                             </div>
                         </Col>
-                        <Col className='help-us' span={6}>
+                        <Col className='help-us' xs={24} sm={18} md={12} lg={6}>
                             <span>HỖ TRỢ KHÁCH HÀNG</span>
                             <ul>
-                                <li>1</li>
-                                <li>2</li>
-                                <li>3</li>
-                                <li>4</li>
+                                <li>
+                                    <a href="">Hướng dẫn thanh toán</a>
+                                </li>
+                                <li>
+                                    <a href="">Hướng dẫn mua hàng</a>
+                                </li>
+                                <li>
+                                    <a href="">Chính sách đổi trả</a>
+                                </li>
+                                <li>
+                                    <a href="">Chính sách bảo mật</a>
+                                </li>
                             </ul>
                         </Col>
-                        <Col className='discount-inform' span={6}>
+                        <Col className='discount-inform' xs={24} sm={18} md={12} lg={6}>
                             <span>ĐĂNG KÍ ĐỂ NHẬN THÔNG TIN KHUYẾN MÃI</span>
-                            <ul>
-                                <li>1</li>
-                                <li>2</li>
-                                <li>3</li>
-                                <li>4</li>
-                            </ul>
+                            <div className="custom-input">
+                                <input className='input' target="_black" type="text" placeholder='Nhập email của bạn vào đây' />
+                                <button className='btn btn-outline-danger btn-sm'>ĐĂNG KÍ</button>
+                            </div>
+                            <img src="http://online.gov.vn/Home/WebDetails/94606" alt="" />
                         </Col>
                     </Row>
                 </div>
             </div>
+
         </div >
     );
 }

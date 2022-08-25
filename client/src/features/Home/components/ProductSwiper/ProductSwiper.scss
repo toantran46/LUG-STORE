@@ -1,0 +1,69 @@
+.product-wrapper{
+    &__bannerAds{
+        position: absolute;
+        img{
+            width: 75px;
+            height: 75px;
+        }
+    }
+    &__salePer{
+        padding: 2px 4px;
+        position: absolute;
+        left: 85%;
+        font-size: 11px;
+        font-weight: 500;
+
+        background-color: #d01132;
+        color: #fff;
+    }
+    &__icon{
+        font-size: 20px;
+        cursor: pointer;
+        .on-hover{
+            display: none;
+            transition: 200ms linear;
+        }   
+        .off-hover{
+            transition: 200ms linear;
+        }
+    }
+    &__icon:hover{
+        .on-hover{
+            transition: 200ms linear;
+            display: block;
+        } 
+        .off-hover{
+            transition: 200ms linear;
+            display: none;
+        } 
+    }
+    &__product-info{
+        font-size: 15px;
+        &__name{
+            font-weight: 500;
+        }
+        &__name:hover{
+            color: #d01132;
+        }
+        &__desc{
+            font-weight: 350;
+        }
+        &__price{
+            font-weight: 600;
+            display: flex;
+            justify-content: center;
+            .price-discounted{
+                padding-right: 5px;
+                color: #d01132;
+            }
+            .price-standar{
+                text-decoration: line-through;
+                color: #9e9fa1;
+            }
+        }
+    }
+}
+.product-wrapper:hover{
+    transition: 200ms linear;
+    padding-bottom: 10px;
+}

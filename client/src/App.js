@@ -2,19 +2,14 @@
 import './assets/commons.scss';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
-import Header from './components/Header';
-import Banner from './components/Banner';
-import Footer from './components/Footer';
+import Home from './features/Home';
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Header />
-        <Banner />
-        <Footer />
         <Routes>
-          <Route path="/" element=""></Route>
+          <Route index path="/" element={<Home />} />
         </Routes>
       </BrowserRouter>
     </div>

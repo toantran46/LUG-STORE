@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './Header.scss';
 import { Input, Tooltip } from 'antd';
-import { ShoppingCartOutlined } from '@ant-design/icons';
+import { ShoppingFilled, SearchOutlined } from '@ant-design/icons';
 
 Header.propTypes = {
 };
@@ -11,6 +11,17 @@ const { Search } = Input;
 function Header(props) {
     return (
         <div className="header">
+            <div className="test">
+                <div className="header-contact">
+                    <div className="left">
+                        <span><b>1800 6646 </b>(miễn phí) - Giao hàng toàn quốc</span>
+                    </div>
+                    <div className="right">
+                        <Link to=''>Đăng kí/đăng nhập</Link>
+                    </div>
+                </div>
+            </div>
+
             <div className='header-container'>
                 <div className="header-container__top-left">
                     <div className="logo">
@@ -27,24 +38,27 @@ function Header(props) {
                                 <Link to="">TÚI XÁCH</Link>
                             </li>
                             <li>
-                                <Link to="">GÓC DU LỊCH</Link>
+                                <Link to="">PHỤ KIỆN</Link>
                             </li>
                         </ul>
                     </div>
                 </div>
                 <div className="header-container__top-right">
                     <div className="search">
-                        <Search placeholder='Bạn cần tìm sản phẩm gì?' />
-                    </div>
-                    <div className="login">
-                        <Link to="">
-                            ĐĂNG NHẬP
-                        </Link>
+                        <Input placeholder='Bạn cần tìm sản phẩm gì?' onSubmit={null} />
+                        <div className="search-icon">
+                            <SearchOutlined />
+                        </div>
                     </div>
                     <div className="cart">
                         <Link to="">
-                            <Tooltip color="red" title="Xem giỏ hàng">
-                                <ShoppingCartOutlined />
+                            <Tooltip placement="bottom" color="red" title="Xem giỏ hàng">
+                                <div className="custom-cart">
+                                    <div className="count-cart">
+                                        <span>10</span>
+                                    </div>
+                                    <ShoppingFilled />
+                                </div>
                             </Tooltip>
                         </Link>
                     </div>
