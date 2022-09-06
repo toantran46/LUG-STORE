@@ -3,27 +3,27 @@ import PropTypes from 'prop-types';
 import BreadCrumb from 'components/BreadCrumb';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
-import './Bags.scss';
-import MenuSort from './components/MenuSort';
-import HeadBread from './components/HeadBread';
-import ListProduct from './components/ListProduct';
+import './Accessories.scss';
 import { Col, Row } from 'antd';
+import HeadBread from 'features/Bags/components/HeadBread';
+import MenuSort from 'features/Bags/components/MenuSort';
+import ListProduct from 'features/Bags/components/ListProduct';
 
-Bags.propTypes = {
+Accessories.propTypes = {
 
 };
 
-function Bags(props) {
+function Accessories(props) {
     return (
         <div>
             <Header />
             <BreadCrumb />
             <div className="container">
-                <div className="banner-bag">
+                <div className="banner-accessory">
                     <div className="responsive">
                     </div>
                 </div>
-                <div className="list-product">
+                <div className="accessory-list-product">
                     <Row>
                         <Col xs={24} sm={24} md={24} lg={24}>
                             <div className="bread">
@@ -48,4 +48,4 @@ function Bags(props) {
     );
 }
 
-export default Bags;
+export default Accessories;

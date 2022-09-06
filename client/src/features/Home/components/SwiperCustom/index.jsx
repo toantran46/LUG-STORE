@@ -11,21 +11,27 @@ import "./SwiperCustom.scss";
 import { Pagination, Navigation } from "swiper";
 
 SwiperCustom.propTypes = {
-
+    slidesPerView: PropTypes.number,
+    spaceBetween: PropTypes.number,
+};
+SwiperCustom.defaultProps = {
+    slidesPerView: null,
+    spaceBetween: null
 };
 
 function SwiperCustom(props) {
+    const { slidesPerView, spaceBetween } = props;
     return (
         <div className='swiper-custom'>
             <Swiper
-                slidesPerView={4}
-                spaceBetween={20}
+                slidesPerView={slidesPerView}
+                spaceBetween={spaceBetween}
                 slidesPerGroup={1}
                 loop={true}
                 loopFillGroupWithBlank={true}
                 navigation={true}
                 // pagination={{
-                //     clickable: true
+                //     clickable: false
                 // }}
                 modules={[Pagination, Navigation]}
                 className="mySwiper"

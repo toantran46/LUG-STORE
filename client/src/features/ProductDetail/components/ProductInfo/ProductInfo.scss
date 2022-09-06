@@ -1,0 +1,55 @@
+.product-info{
+    margin-bottom: 20px;
+    &__name{
+        font-size: 30px;
+    }
+    &__brand{
+        margin-bottom: 10px;
+        font-size: 18px;
+        a{
+            font-weight: 500;
+            color: #4f4fe8;
+        }
+        a:hover{
+            color: #0d0d8b;
+        }
+    }
+    &__price{
+        font-size: 18px;
+        align-items: center;
+        margin-bottom: 10px;
+        .discounted{
+            color: #e9252c;
+            padding-right: 5px;
+            font-weight: 500;
+        }
+        .standar{
+            text-decoration: line-through;
+            color: #9e9fa1;
+            padding-right: 10px;
+        }
+        .perSale{
+            border-radius: 3px;
+            padding: 2px 4px;
+            right: 5%;
+            font-size: 11px;
+            font-weight: 500;
+    
+            background-color: #d01132;
+            color: #fff;
+        }
+    }
+    &__color{
+        .swatch-list-color {
+            padding-bottom: unset;
+            margin-bottom: 50px;
+        }
+    }
+    &__button{
+        .btn-danger{
+            font-size: 13px;
+             background-color: #e9252c;
+             font-weight: 700;
+        }
+    }
+}

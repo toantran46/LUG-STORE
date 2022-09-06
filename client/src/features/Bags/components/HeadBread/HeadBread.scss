@@ -1,0 +1,14 @@
+.head-bread{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .watching{
+        color:#64666a;
+        font-weight: 500;
+    }
+    .sort-dropdown{
+        .ant-select-selector{
+            border: none;
+        }
+    }
+}

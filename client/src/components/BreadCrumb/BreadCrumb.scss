@@ -1,0 +1,19 @@
+.wrapper{
+    background: #ededed;
+    .wrapper-container{
+        margin: 0 auto;
+        width: 75%;
+        .bread-crumb{
+            border-top: 1px solid #f5f5f7;
+            margin-bottom: 5px;
+            font-size: .75rem;
+            line-height: 1rem;
+            padding: 0.5rem 0;
+            font-weight: 500;
+            a:hover{
+                color: #d01132;
+            }
+        }
+    }
+}
+

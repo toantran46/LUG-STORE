@@ -1,0 +1,28 @@
+.container{
+    margin-bottom: 30px;
+    .banner-lug{
+        margin-bottom: 10px;
+        .responsive{
+            height: 200px;
+            background-image: url(https://bizweb.dktcdn.net/100/349/716/files/tuixach-desktop.png?v=1578300174239);
+        }
+    }
+    .bread-lug{
+        border-bottom: 1px solid #e7e7e7;
+    }
+}
+.lug-list-product{
+    display: flex;
+    .menu-sort{
+        width: 270px;
+        margin-right: 20px;
+        margin-bottom: 10px;
+        padding: 15px 20px;
+        border: solid 1px #ddd;
+    }
+    .products{
+        display: flex;
+    }
+}
+
+    

@@ -27,14 +27,14 @@ function ProductWisper(props) {
                     <HeartOutlined />
                 </div>
             </div>
-            <Link to="">
+            <Link to="/products/1">
                 <img width={200} height={200} src="https://bizweb.sapocdn.net/thumb/large/100/349/716/products/8689-grey-18-s-square-2.jpg?v=1660807558000" alt="" />
                 <div className="product-wrapper__product-info">
                     <div className="product-wrapper__product-info__name">
                         <b>Bruno Cavalli</b>
                     </div>
                     <div className="product-wrapper__product-info__desc">
-                        Balo Cavalli 8669
+                        Balo Cavalli 6868
                     </div>
                     <div className="product-wrapper__product-info__price">
                         <div className="price-discounted">

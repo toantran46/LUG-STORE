@@ -54,6 +54,9 @@
                     color: #000;
                     li{
                         margin-right: 1rem;
+                        a:hover{
+                            text-decoration: underline;
+                        }
                     }
                 }
                
@@ -91,12 +94,22 @@
                     color: #d45959;
                 }
             }
+            .map{
+                color: #d80f0f;
+                font-size: 20px;
+                padding-right: 15px;
+                
+            }
+            .map:hover{
+                padding-bottom: 2px;
+            }
             .cart{
                 position: relative;
                 font-size: 30px;
                 color: #d80f0f;
                 .custom-cart{
                     position: relative;
+                    display: flex;
                     .count-cart{
                         position: absolute;
                         width: 100%;
@@ -110,7 +123,7 @@
                             font-weight: 500;
                             font-size: 15px;
                             color: #fff
-                        } 
+                        }
                     }
                 }
                

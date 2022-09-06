@@ -5,6 +5,7 @@ import Banner from 'features/Home/components/Banner';
 import Footer from 'components/Footer';
 import TopBags from './components/TopBags';
 import './Home.scss';
+import { Drawer } from 'antd';
 
 Home.propTypes = {
 

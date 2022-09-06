@@ -1,0 +1,117 @@
+.cart{
+    .container{
+        .head-title{
+            padding: 30px 0;
+            margin: 0;
+            text-align: center;
+            h1{
+                font-size: 1.5rem;
+            }
+        }
+        .table{
+            .heading{
+                background-color: #ededed;
+            }
+            .cart-detail{
+                td{
+                    vertical-align: middle;
+                }
+                .item-image{
+                    display: flex;
+                    img{
+                        width: 125px;
+                        height: 125px;
+                    }
+                    .info{
+                        margin-left: 10px;
+                        a:hover{
+                            color: #d40c0c;
+                        }
+                        .name{
+                            font-weight: 500;
+                            padding-bottom: 10px;
+                            padding-top: 20px;
+                        }
+                        .brand{
+                            text-decoration: underline;
+                        }
+                    }
+                }
+                .item-color{
+                    .swatch-color{
+                        display: inline-block;
+                        width: 23px;
+                        height: 23px;
+                        border-radius: 50%;
+                        border: 1px solid #a2a2a2;
+                    }
+                }
+                .item-price{
+                    .discounted{
+                        color: #e9252c;
+                        padding-right: 5px;
+                        font-weight: 500;
+                    }
+                    .standar{
+                        text-decoration: line-through;
+                        color: #9e9fa1;
+                        padding-right: 10px;
+                    }
+                }
+                .item-total{
+                    .discounted{
+                        color: #e9252c;
+                        padding-right: 5px;
+                        font-weight: 500;
+                    }
+                }
+                .item-delete{
+                    font-size: 18px;
+                    span{
+                        cursor: pointer;
+                    }
+                    span:hover{
+                        color: #d40c0c;
+                    }
+                }
+            }
+            .ship{
+                .banner-ship{
+                    display: flex;
+                    font-size: 16px;
+                    color: #9e9fa1;
+                    .free-ship{
+                        span{
+                            padding-left: 5px;
+                            margin-right: 5px;
+                        }
+                    margin-right: 20px;
+                    }
+                    .assurance{
+                        span{
+                            padding-left: 5px;
+                        }
+                    }
+                }
+                .home-back{
+                    font-size: 15px;
+                    margin-top: 20px;
+                    color: #d40c0c;
+                    a:hover{
+                        text-decoration: underline;
+                    }
+                }
+            }
+            .totals{
+                font-weight: 700;
+                font-size: 15px;
+                .title{
+                    margin-bottom: 10px;
+                }
+                .price{
+                    margin-bottom: 5px;
+                }
+            }
+        }
+    }
+}

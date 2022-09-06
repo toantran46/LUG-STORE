@@ -10,7 +10,7 @@ Banner.propTypes = {
 
 };
 const contentStyle = {
-    height: '400px',
+    height: '500px',
     color: '#fff',
     lineHeight: '160px',
     textAlign: 'center',

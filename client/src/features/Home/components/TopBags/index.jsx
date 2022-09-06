@@ -12,7 +12,7 @@ function TopBags(props) {
     const product = new Array(10).fill(0);
     return (
         <div className='TopBags'>
-            <SwiperCustom >
+            <SwiperCustom slidesPerView={4} spaceBetween={20}>
                 {product.map((value, index) => <SwiperSlide key={index}><ProductSwiper /></SwiperSlide>)}
             </SwiperCustom>
         </div>
