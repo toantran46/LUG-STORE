@@ -31,7 +31,7 @@ function Banner(props) {
                 <Carousel autoplay className='carousel-banner' ref={btnRef}>
                     <div>
                         <div className="carousel-picture" style={contentStyle}>
-                            <img src="https://bizweb.dktcdn.net/100/349/716/files/1920-x-586-pw11529.png?v=1657608021940" alt="" />
+                            <img src="https://bizweb.sapocdn.net/thumb/1024x1024/100/349/716/files/muakemdealhoi-1100x500.png?v=1662547118630" alt="" />
                         </div>
                     </div>
                     <div>
@@ -41,7 +41,7 @@ function Banner(props) {
                     </div>
                     <div>
                         <div className="carousel-picture" style={contentStyle}>
-                            <img src="https://bizweb.dktcdn.net/100/349/716/files/1920x586-eco1.png?v=1660018342187" alt="" />
+                            <img src="https://bizweb.sapocdn.net/thumb/1024x1024/100/349/716/files/1100x500-bruno-usb.png?v=1662611298507" alt="" />
                         </div>
                     </div>
                 </Carousel>

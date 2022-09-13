@@ -59,6 +59,36 @@ function Cart(props) {
                                 <span><DeleteFilled /></span>
                             </td>
                         </tr>
+                        <tr className='cart-detail'>
+                            <td className='item-image'>
+                                <Link to=''>
+                                    <img src="https://bizweb.sapocdn.net/100/349/716/products/8689-grey-18-s-square-1.jpg?v=1660807558793" alt="" />
+                                </Link>
+                                <div className="info">
+                                    <Link to=""><div className="name">BALO CAVALLI 6868</div></Link>
+                                    <div className="brand">
+                                        <Link to=''>Bruno Cavalli</Link></div>
+                                </div>
+                            </td>
+                            <td className='item-color'>
+                                <span style={{ backgroundColor: 'red' }} className='swatch-color'></span>
+                            </td>
+                            <td className='item-price'>
+                                <span className='discounted'>1.290.000₫</span>
+                                <span className='standar'>1.842.857₫</span>
+                            </td>
+                            <td className='item-quantity'>
+                                <Button>-</Button>
+                                <Button disabled>1</Button>
+                                <Button>+</Button>
+                            </td>
+                            <td className='item-total'>
+                                <span className='discounted'>1.290.000₫</span>
+                            </td>
+                            <td colSpan={0.2} className='item-delete'>
+                                <span><DeleteFilled /></span>
+                            </td>
+                        </tr>
                     </tbody>
                     <tfoot>
                         <tr>
@@ -82,7 +112,8 @@ function Cart(props) {
                                     <span className='title'>Tổng tiền: </span>
                                     <span className='price'>2.180.000₫</span>
                                 </div>
-                                <button className='btn btn-danger btn-block'>TIẾN HÀNH THANH TOÁN</button>
+                                <Link to={'/payment'}><button className='btn btn-danger btn-block'>TIẾN HÀNH THANH TOÁN</button></Link>
+
                             </td>
                         </tr>
                     </tfoot>

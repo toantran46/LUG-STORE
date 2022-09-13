@@ -1,22 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Header.scss';
-import { Drawer, Input, Tooltip } from 'antd';
+import { Input, Tooltip } from 'antd';
 import { ShoppingFilled, SearchOutlined, EnvironmentOutlined } from '@ant-design/icons';
 import ModelLogin from 'components/ModelLogin';
+import ModeUser from 'components/ModeUser';
 
 Header.propTypes = {
 };
 const { Search } = Input;
 
 function Header(props) {
+    const [onLogin, setOnLogin] = useState(true);
     return (
         <div className="header">
             <div className="test">
                 <div className="header-contact">
                     <div className="left">
-                        <span><b>1800 6646 </b>(miễn phí) - Giao hàng toàn quốc</span>
+                        <span><b>1800 6868 </b>(miễn phí) - Giao hàng toàn quốc</span>
                     </div>
+                    {!onLogin ?
+                        <ModelLogin />
+                        :
+                        <ModeUser />
+                    }
+
                 </div>
             </div>
 
@@ -48,7 +56,7 @@ function Header(props) {
                             <SearchOutlined />
                         </div>
                     </div>
-                    <Link to="">
+                    <Link to="/map">
                         <div className='map'>
                             <EnvironmentOutlined />
                         </div>

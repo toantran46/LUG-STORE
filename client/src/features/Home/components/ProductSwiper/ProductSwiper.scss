@@ -73,5 +73,6 @@
 .product-wrapper:hover{
     img{
         transform: scale(1.05);
+        transition: all .2s ease-out;
     }
 }

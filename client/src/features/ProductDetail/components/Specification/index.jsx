@@ -12,7 +12,7 @@ function Specification(props) {
     return (
         <div className="detail">
             <div className="link">
-                <Link to=''>
+                <Link to='/map'>
                     <EnvironmentOutlined /> Địa chỉ cửa hàng
                 </Link>
             </div>

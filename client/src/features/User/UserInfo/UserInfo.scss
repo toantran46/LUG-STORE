@@ -1,0 +1,28 @@
+.user-info{
+    .content{
+        text-align: center;
+        padding: 20px;
+        border: 2px solid #cecbcbaa;
+        border-radius: 8px;
+        
+        .title{
+            padding: 10px 0;
+        }
+        .avatar{
+            margin-bottom: 10px;
+        }
+        .ant-input[disabled]{
+            color: inherit;
+            background-color: inherit;
+        }
+        .ant-radio-group[disabled]{
+            color: inherit;
+            background-color: inherit;
+        }
+        .ant-picker.ant-picker-disabled {
+            color: inherit;
+            background-color: inherit;
+            cursor: not-allowed;
+        }
+    }
+}

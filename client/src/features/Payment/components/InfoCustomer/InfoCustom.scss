@@ -1,0 +1,23 @@
+.info-custom{
+    margin-right: 10px;
+    margin-bottom: 10px;
+    padding: 14px;
+
+    border: 1px solid #e7e4e4;
+    border-radius: 8px;
+    font-size: 17px;
+    .main-header{
+        font-size: 15px;
+        h5{
+            margin-bottom: 20px;
+        }
+        .ant-input[disabled]{
+            color: inherit;
+            background-color: inherit;
+        }
+    }
+    .change-address{
+        margin-bottom: 20px;
+        align-items: center;
+    }
+}

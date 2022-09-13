@@ -1,0 +1,73 @@
+.model-login{
+    .ant-btn-primary{
+        background-color: inherit;
+        border: none;
+    }
+    .login-form{
+        .ant-form-item{
+            margin-bottom: 30px;
+        }
+    }
+    
+   
+}
+.or{
+    align-items: center;
+    text-align: center;
+}
+.title{
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 20px;
+    font-weight: 500;
+}
+.social-login{
+    margin-top: 10px;
+    span{
+        font-size: 15px;
+        margin-right: 5px;
+    }
+    .fb-login{
+        margin-bottom: 10px;
+        .ant-btn-primary{
+            background-color: #181fe3;
+        }
+        
+    }
+    .gg-login{
+        .ant-btn-dangerous{
+            background-color: #f22323;
+        }
+    }
+    .not-account{
+        margin-top: 50px;
+        padding-top: 20px;
+        border-top: 1px solid #cacace;
+        text-align: center;
+
+        font-size: 15px;
+        font-weight: 400;
+        .regis{
+            color: #4664c8;
+            cursor: pointer;
+        }
+        .regis:hover{
+            text-decoration: underline;
+        }
+    }
+}
+.have-account{
+    margin-top: 30px;
+    border-top: 1px solid #cacace;
+    text-align: center;
+
+    font-size: 15px;
+    font-weight: 400;
+    .lgin{
+        color: #4664c8;
+        cursor: pointer;
+    }
+    .lgin:hover{
+        text-decoration: underline;
+    }
+}

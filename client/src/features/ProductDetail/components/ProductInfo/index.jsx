@@ -52,10 +52,12 @@ function ProductInfo(props) {
                 </div>
             </div>
             <div className="product-info__button">
-                <button className='btn btn-danger btn-block'>
-                    <span>MUA NGAY</span><br />
-                    <span>TIẾT KIỆM ĐẾN 552.857₫</span>
-                </button>
+                <Link to={"/cart"}>
+                    <button className='btn btn-danger btn-block'>
+                        <span>MUA NGAY</span><br />
+                        <span>TIẾT KIỆM ĐẾN 552.857₫</span>
+                    </button>
+                </Link>
             </div>
         </div>
     );

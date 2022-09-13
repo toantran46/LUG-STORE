@@ -10,13 +10,11 @@ CommentNRate.propTypes = {
 const data = [
     {
         actions: [<span key="comment-list-reply-to-0">Reply to</span>],
-        author: 'Han Solo',
+        author: 'Hiếu Thứ 3',
         avatar: 'https://joeschmoe.io/api/v1/random',
         content: (
             <p>
-                We supply a series of design principles, practical patterns and high quality design
-                resources (Sketch and Axure), to help people create their product prototypes beautifully and
-                efficiently.
+                Sản phẩm rất đẹp và tốt
             </p>
         ),
         datetime: (
@@ -27,13 +25,11 @@ const data = [
     },
     {
         actions: [<span key="comment-list-reply-to-0">Reply to</span>],
-        author: 'Han Solo',
+        author: 'Hiếu Thứ 4',
         avatar: 'https://joeschmoe.io/api/v1/random',
         content: (
             <p>
-                We supply a series of design principles, practical patterns and high quality design
-                resources (Sketch and Axure), to help people create their product prototypes beautifully and
-                efficiently.
+                Sản phẩm rất đẹp và tốt
             </p>
         ),
         datetime: (
@@ -48,7 +44,7 @@ const CommentList = ({ comments }) => (
     <List
         className='comment-list'
         dataSource={comments}
-        header={`${comments.length} ${comments.length > 1 ? 'replies' : 'reply'}`}
+        header={`${comments.length} ${'bình luận'}`}
         itemLayout="horizontal"
         renderItem={(item) => (
             <li>
@@ -92,7 +88,7 @@ function CommentNRate(props) {
                 ...comments,
                 {
                     actions: [<span key="comment-list-reply-to-0">Reply to</span>],
-                    author: 'Han Solo',
+                    author: 'Toàn',
                     avatar: 'https://joeschmoe.io/api/v1/random',
                     content: <p>{value}</p>,
                     datetime: moment().fromNow(),
@@ -107,9 +103,9 @@ function CommentNRate(props) {
     return (
         <div className='comment-rate'>
             <h4>Bình luận và đánh giá về sản phẩm</h4>
-            <List
+            {/* <List
                 className="comment-list"
-                header={`${data.length} replies`}
+                header={`${data.length} bình luận`}
                 itemLayout="horizontal"
                 dataSource={data}
                 renderItem={(item) => (
@@ -123,7 +119,7 @@ function CommentNRate(props) {
                         />
                     </li>
                 )}
-            />
+            /> */}
             <>
                 {comments.length > 0 && <CommentList comments={comments} />}
                 <Comment
