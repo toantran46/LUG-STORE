@@ -1,0 +1,16 @@
+.head{
+    padding: 8px 10px;
+    background-color: #f7f5f5;
+    color: #fff;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    .log-out{
+        text-align: right;
+        font-size: 15px;
+        color: #000;
+        .icon-logout{
+            padding-left: 10px;
+        }
+    }
+}

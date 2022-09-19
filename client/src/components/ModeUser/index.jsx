@@ -30,11 +30,19 @@ const menu = (
             },
             {
                 label: (
+                    <Link to="/user" >
+                        <HeartOutlined /> Sản phẩm yêu thích
+                    </Link>
+                ),
+                key: '2',
+            },
+            {
+                label: (
                     <Link to="">
                         <LogoutOutlined /> Đăng xuất
                     </Link>
                 ),
-                key: '2',
+                key: '3',
             },
         ]}
     />

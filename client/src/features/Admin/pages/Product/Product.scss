@@ -1,0 +1,25 @@
+.changes{
+    display: flex;
+    .delete-icon{
+        color: #e00f0f;
+    }
+}
+.product{
+    margin: 0 auto;
+    text-align: center;
+    .content{
+        .title-header{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 10px;
+        }
+        .ant-table-wrapper{
+            // max-width: 90%;
+            // overflow-x: auto;
+        }
+        .pagination{
+            margin-top: 20px;
+        }
+    }
+}
