@@ -1,6 +1,6 @@
 var mysql = require('mysql');
 
-console.log('Get connection ...');
+console.log('Connecting ...');
 
 var conn = mysql.createConnection({
     database: 'db_lug',
