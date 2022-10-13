@@ -4,7 +4,34 @@ var randomString = require('random-string');
 module.exports = {
     getAlls: async (req, res) => {
         try {
-            const { _limit, _page } = req.query;
+            const { _limit, _page, action, IDsanpham } = req.query;
+            if (action == 'getAllColorByProductId') {
+                const sql = `SELECT A.MS_MAMAU, B.MS_TENMAU, A.CTMS_SOLUONG FROM chitietmausac A
+                             INNER JOIN mausac B ON A.MS_MAMAU = B.MS_MAMAU
+                             WHERE SP_MA = '${IDsanpham}'`
+                const colorArray = await executeQuery(sql);
+
+                const processes = colorArray.map((sp, idx) => {
+                    return new Promise(async (resolve, reject) => {
+                        try {
+                            const sql = `SELECT HASP_MAHINHANH,HASP_DUONGDAN FROM hinhanhsanpham WHERE SP_MA='${IDsanpham}' AND MS_MAMAU ='${sp.MS_MAMAU}' `
+                            const anhsanphams = await executeQuery(sql);
+                            colorArray[idx].hinhanh = anhsanphams;
+                            resolve(true);
+                        } catch (error) {
+                            console.log({ error })
+                            reject(error);
+                        }
+                    })
+                });
+
+                await Promise.all(processes);
+
+                return res.json({
+                    result: colorArray,
+                    message: 'Success'
+                });
+            }
             const sql = `SELECT * FROM mausac ${(_page && _limit) ? ' LIMIT ' + _limit + ' OFFSET ' + _limit * (_page - 1) : ''}`;
             const mausacs = await executeQuery(sql);
             // console.log(sql);
@@ -13,7 +40,7 @@ module.exports = {
 
             res.json({
                 result: mausacs,
-                records: data[0].total,
+                totalRecords: data[0].total,
                 message: 'Success'
             });
         } catch (error) {
@@ -40,7 +67,7 @@ module.exports = {
             const { MS_TENMAU } = req.body;
             const MS_MAMAU = randomString();
 
-            const sql = `INSERT INTO mausac (MS_MAMAU, MS_TENMAU, )
+            const sql = `INSERT INTO mausac (MS_MAMAU, MS_TENMAU)
             VALUES('${MS_MAMAU}', '${MS_TENMAU}')`;
             await executeQuery(sql);
             res.json({ message: 'Thêm màu sắc thành công.' });

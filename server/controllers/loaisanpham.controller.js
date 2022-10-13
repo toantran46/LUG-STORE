@@ -13,7 +13,7 @@ module.exports = {
 
             res.json({
                 result: loaisanphams,
-                records: data[0].total,
+                totalRecords: data[0].total,
                 message: 'Success'
             });
         } catch (error) {
@@ -40,7 +40,7 @@ module.exports = {
             const { LSP_TENLOAI } = req.body;
             const LSP_MALOAI = randomString();
 
-            const sql = `INSERT INTO loaisanpham(LSP_MALOAI, LSP_TENLOAI, )
+            const sql = `INSERT INTO loaisanpham(LSP_MALOAI, LSP_TENLOAI )
             VALUES('${LSP_MALOAI}', '${LSP_TENLOAI}')`;
             await executeQuery(sql);
             res.json({ message: 'Thêm loại sản phẩm thành công.' });

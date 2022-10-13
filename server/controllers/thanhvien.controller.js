@@ -1,6 +1,6 @@
 const { executeQuery, checkIsExist, executeUpdateQuery } = require("../mysql");
 var randomString = require('random-string');
-const { generateToken, generateRefreshToken } = require("../globals/globals");
+const { generateToken, generateRefreshToken, hashString, compareString } = require("../globals/globals");
 
 module.exports = {
     getAlls: async (req, res) => {
@@ -14,7 +14,7 @@ module.exports = {
 
             res.json({
                 result: thanhviens,
-                records: data[0].total,
+                totalRecords: data[0].total,
                 message: 'Success'
             });
         } catch (error) {
@@ -38,15 +38,20 @@ module.exports = {
     },
     post: async (req, res) => {
         try {
-            const { TV_MATKHAU, TV_HOTEN, TV_GIOITINH, TV_NGAYSINH, TV_DIACHI, TV_SODIENTHOAI, TV_AVATAR, TV_EMAIL } = req.body;
+            const { MATKHAU, TV_HOTEN, TV_GIOITINH, TV_DIACHI, TV_SODIENTHOAI, TV_AVATAR, TV_EMAIL } = req.body;
             const TV_ID = randomString();
 
+            const isExist = await checkIsExist('thanhvien', 'TV_EMAIL', TV_EMAIL);
+            if (isExist) return res.status(400).json({ message: "Email đã được sử dụng." });
+
+            console.log(req.body);
             const avatarUrl = req.file?.path || TV_AVATAR;
-            const MAT_KHAU_HASHED = await hashString(TV_MATKHAU);
-            const sql = `INSERT INTO thanhvien(TV_ID, TV_MATKHAU, TV_HOTEN, TV_GIOITINH, TV_NGAYSINH, TV_DIACHI, TV_SODIENTHOAI, TV_AVATAR, TV_EMAIL )
-                        VALUES('${TV_ID}','${MAT_KHAU_HASHED}','${TV_HOTEN}','${TV_GIOITINH}','${TV_NGAYSINH}','${TV_DIACHI}','${TV_SODIENTHOAI}','${avatarUrl || ""},'${TV_EMAIL}'')`;
+            const MAT_KHAU_HASHED = await hashString(MATKHAU);
+            const sql = `INSERT INTO thanhvien(TV_ID, TV_MATKHAU, TV_HOTEN, TV_GIOITINH, TV_DIACHI, TV_SODIENTHOAI, TV_AVATAR, TV_EMAIL )
+                        VALUES('${TV_ID}','${MAT_KHAU_HASHED}','${TV_HOTEN}','${TV_GIOITINH}','${TV_DIACHI}','${TV_SODIENTHOAI}','${avatarUrl || ""}','${TV_EMAIL}')`;
+            // console.log(sql);
             await executeQuery(sql);
-            res.json({ message: 'Thêm thành viên thành công.' });
+            res.json({ message: 'Đăng kí thành viên thành công.' });
         } catch (error) {
             console.log({ error: error.message });
             res.status(500).json({ message: "Error !!!" })
@@ -60,10 +65,15 @@ module.exports = {
 
             let data = { ...req.body };
             const avatarUrl = req.file?.path;
-            if (avatarUrl) data = { ...data, TV_AVATAR: avatarUrl }
+            console.log(avatarUrl);
+            // return;
+            data = avatarUrl ? { ...data, TV_AVATAR: avatarUrl } : data
+
+            console.log(data);
 
             const sql = `UPDATE thanhvien SET ? WHERE TV_ID = '${IDthanhvien}'`;
-            await executeUpdateQuery(sql, { ...req.body });
+            console.log(sql);
+            await executeUpdateQuery(sql, data);
 
             res.json({ message: 'Cập nhật thành viên thành công.' });
         } catch (error) {
@@ -89,6 +99,7 @@ module.exports = {
     login: async (req, res) => {
         try {
             const { EMAIL, MATKHAU } = req.body;
+            console.log(req.body);
             let user;
             let response;
             const isExist = await checkIsExist('thanhvien', 'TV_EMAIL', EMAIL)
@@ -96,6 +107,7 @@ module.exports = {
                 const isExist_employee = await checkIsExist('nhanvien', 'NV_EMAIL', EMAIL);
                 if (!isExist_employee) return res.status(400).json({ message: "Tài khoản không tồn tại." });
                 const sql = `SELECT * FROM nhanvien a, chucvu b WHERE a.NV_EMAIL='${EMAIL}' AND a.CV_MA = b.CV_MA`;
+                console.log(sql);
                 response = await executeQuery(sql);
             } else {
                 const sql = `SELECT * FROM thanhvien WHERE TV_EMAIL='${EMAIL}'`;
@@ -125,7 +137,7 @@ module.exports = {
             const data = await executeQuery(sql);
             res.json({
                 result: data[0],
-                message: 'Thành công'
+                message: 'Getme thành công'
             });
         } catch (error) {
             console.log({ error: error.message });
@@ -150,19 +162,19 @@ module.exports = {
     },
     userInfoLoginSocial: async (req, res) => {
         try {
-            const { HO_TEN, SO_DIEN_THOAI, EMAIL, ANH_DAI_DIEN, } = req.body;
-            const isExist = await checkIsExist('thanhvien', 'TV_EMAIL', EMAIL);
+            const { TV_HOTEN, TV_SODIENTHOAI, TV_EMAIL, TV_AVATAR, TV_LOAITAIKHOAN } = req.body;
+            const isExist = await checkIsExist('thanhvien', `TV_LOAITAIKHOAN = 'google_mxh' OR TV_LOAITAIKHOAN = 'facebook_mxh' AND TV_EMAIL`, TV_EMAIL);
             let sql;
             if (isExist) {
-                sql = `UPDATE thanhvien SET ? WHERE TV_EMAIL='${EMAIL}'`;
-                await executeUpdateQuery(sql, { HO_TEN, SO_DIEN_THOAI, ANH_DAI_DIEN });
+                sql = `UPDATE thanhvien SET ? WHERE TV_LOAITAIKHOAN = 'google_mxh' OR TV_LOAITAIKHOAN = 'facebook_mxh' AND TV_EMAIL='${TV_EMAIL}'`;
+                await executeUpdateQuery(sql, { TV_HOTEN, TV_SODIENTHOAI, TV_EMAIL, TV_AVATAR, TV_LOAITAIKHOAN });
             } else {
                 const TV_ID = randomString();
-                sql = `INSERT INTO thanhvien(TV_ID,TV_HOTEN, TV_SODIENTHOAI, TV_EMAIL, TV_AVATAR,) VALUES ('${TV_ID}','${HO_TEN}','${SO_DIEN_THOAI}','${EMAIL}','${ANH_DAI_DIEN}')`;
+                sql = `INSERT INTO thanhvien(TV_ID,TV_HOTEN, TV_SODIENTHOAI, TV_EMAIL, TV_AVATAR, TV_LOAITAIKHOAN) VALUES ('${TV_ID}','${TV_HOTEN}','${TV_SODIENTHOAI}','${TV_EMAIL}','${TV_AVATAR}','${TV_LOAITAIKHOAN}')`;
                 await executeQuery(sql);
             }
 
-            const sql_getInfo = `SELECT * FROM thanhvien WHERE TV_EMAIL='${EMAIL}'`;
+            const sql_getInfo = `SELECT * FROM thanhvien WHERE TV_LOAITAIKHOAN = 'google_mxh' OR TV_LOAITAIKHOAN = 'facebook_mxh' AND TV_EMAIL='${TV_EMAIL}'`;
             const data = await executeQuery(sql_getInfo);
             const user = data[0];
             console.log({ sql_getInfo, user });

@@ -1,4 +1,5 @@
-const { verifyToken } = require('../globals/globals');
+const { verifyToken } = require("../globals/globals");
+
 
 module.exports = {
     isAuth: async (req, res, next) => {

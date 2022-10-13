@@ -26,6 +26,7 @@ const yeuthichRouter = require('./routes/yeuthich.route');
 const binhluanRouter = require('./routes/binhluan.route');
 const phieunhapRouter = require('./routes/phieunhap.route');
 const thanhvienRouter = require('./routes/thanhvien.route');
+const sanphamRouter = require('./routes/sanpham.route');
 
 app.use('/api/khuyenmais', khuyenmaiRouter);
 app.use('/api/thuonghieus', thuonghieuRouter);
@@ -39,6 +40,7 @@ app.use('/api/yeuthichs', yeuthichRouter);
 app.use('/api/binhluans', binhluanRouter);
 app.use('/api/phieunhaps', phieunhapRouter);
 app.use('/api/thanhviens', thanhvienRouter);
+app.use('/api/sanphams', sanphamRouter);
 
 
 

@@ -1,5 +1,6 @@
 const { executeQuery, checkIsExist, executeUpdateQuery } = require("../mysql");
 var randomString = require('random-string');
+const { hashString } = require("../globals/globals");
 
 module.exports = {
     getAlls: async (req, res) => {
@@ -16,7 +17,7 @@ module.exports = {
 
             res.json({
                 result: nhanviens,
-                records: data[0].total,
+                totalRecords: data[0].total,
                 message: 'Success'
             });
         } catch (error) {
@@ -40,11 +41,16 @@ module.exports = {
     },
     post: async (req, res) => {
         try {
-            const { CV_MA, NV_MATKHAU, NV_HOTEN, NV_GIOITINH, NV_NAMSINH, NV_DIACHI, NV_SODIENTHOAI } = req.body;
+            const { CV_MA, MATKHAU, NV_HOTEN, NV_GIOITINH, NV_DIACHI, NV_SODIENTHOAI, NV_EMAIL } = req.body;
             const NV_ID = randomString();
 
-            const sql = `INSERT INTO nhanvien(NV_ID, CV_MA, NV_MATKHAU, NV_HOTEN, NV_GIOITINH, NV_NAMSINH, NV_DIACHI, NV_SODIENTHOAI )
-            VALUES('${NV_ID}','${CV_MA}', '${NV_MATKHAU}','${NV_HOTEN}','${NV_GIOITINH}','${NV_NAMSINH}','${NV_DIACHI}','${NV_SODIENTHOAI}')`;
+            const isExist = await checkIsExist('nhanvien', 'NV_EMAIL', NV_EMAIL);
+            if (isExist) return res.status(400).json({ message: "Email đã được sử dụng." });
+
+            const MAT_KHAU_HASHED = await hashString(MATKHAU);
+
+            const sql = `INSERT INTO nhanvien(NV_ID, CV_MA, NV_MATKHAU, NV_HOTEN, NV_GIOITINH, NV_DIACHI, NV_SODIENTHOAI,NV_EMAIL )
+            VALUES('${NV_ID}','${CV_MA}', '${MAT_KHAU_HASHED}','${NV_HOTEN}','${NV_GIOITINH}','${NV_DIACHI}','${NV_SODIENTHOAI}','${NV_EMAIL}')`;
             await executeQuery(sql);
             res.json({ message: 'Thêm nhân viên thành công.' });
         } catch (error) {
@@ -55,6 +61,7 @@ module.exports = {
     patch: async (req, res) => {
         try {
             const { IDnhanvien } = req.params;
+            console.log(req.body)
             const isExist = await checkIsExist('nhanvien', 'NV_ID', IDnhanvien);
             if (!isExist) return res.status(400).json({ message: "nhân viên không tồn tại." });
 

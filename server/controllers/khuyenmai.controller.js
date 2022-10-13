@@ -12,7 +12,7 @@ module.exports = {
 
             res.json({
                 result: khuyenmais,
-                records: data[0].total,
+                totalRecords: data[0].total,
                 message: 'Success'
             });
         } catch (error) {
@@ -39,7 +39,7 @@ module.exports = {
             const { KM_PHANTRAMKM } = req.body;
             const KM_MAKM = randomString();
 
-            const sql = `INSERT INTO khuyenmai(KM_MAKM, KM_PHANTRAMKM, )
+            const sql = `INSERT INTO khuyenmai(KM_MAKM, KM_PHANTRAMKM)
             VALUES('${KM_MAKM}', '${KM_PHANTRAMKM}')`;
             await executeQuery(sql);
             res.json({ message: 'Thêm khuyến mãi thành công.' });

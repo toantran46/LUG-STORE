@@ -12,7 +12,7 @@ module.exports = {
 
             res.json({
                 result: nhacungcaps,
-                records: data[0].total,
+                totalRecords: data[0].total,
                 message: 'Success'
             });
         } catch (error) {

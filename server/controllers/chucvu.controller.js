@@ -13,7 +13,7 @@ module.exports = {
 
             res.json({
                 result: chucvus,
-                records: data[0].total,
+                totalRecords: data[0].total,
                 message: 'Success'
             });
         } catch (error) {
@@ -39,7 +39,6 @@ module.exports = {
         try {
             const { CV_TEN, CV_DIENGIAI } = req.body;
             const CV_MA = randomString();
-
             const sql = `INSERT INTO chucvu(CV_MA, CV_TEN, CV_DIENGIAI )
             VALUES('${CV_MA}', '${CV_TEN}','${CV_DIENGIAI}')`;
             await executeQuery(sql);

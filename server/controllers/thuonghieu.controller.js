@@ -13,7 +13,7 @@ module.exports = {
 
             res.json({
                 result: thuonghieus,
-                records: data[0].total,
+                totalRecords: data[0].total,
                 message: 'Success'
             });
         } catch (error) {
@@ -40,7 +40,7 @@ module.exports = {
             const { TH_TENTHUONGHIEU } = req.body;
             const TH_MATHUONGHIEU = randomString();
 
-            const sql = `INSERT INTO thuonghieu (TH_MATHUONGHIEU, TH_TENTHUONGHIEU, )
+            const sql = `INSERT INTO thuonghieu (TH_MATHUONGHIEU, TH_TENTHUONGHIEU)
             VALUES('${TH_MATHUONGHIEU}', '${TH_TENTHUONGHIEU}')`;
             await executeQuery(sql);
             res.json({ message: 'Thêm thương hiệu thành công.' });
