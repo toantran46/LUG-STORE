@@ -1,7 +1,9 @@
 import { Avatar, Button, Comment, Form, Input, List, Tooltip } from 'antd';
 import moment from 'moment';
 import React, { useState } from 'react';
+import './CommentNRate.scss';
 const { TextArea } = Input;
+
 
 CommentNRate.propTypes = {
 

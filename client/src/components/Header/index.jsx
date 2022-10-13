@@ -1,17 +1,60 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Header.scss';
-import { Input, Tooltip } from 'antd';
-import { ShoppingFilled, SearchOutlined, EnvironmentOutlined } from '@ant-design/icons';
+import { Avatar, Dropdown, Input, Menu, Space, Tooltip } from 'antd';
+import { ShoppingFilled, SearchOutlined, EnvironmentOutlined, DownOutlined, HeartOutlined, HistoryOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import ModelLogin from 'components/ModelLogin';
 import ModeUser from 'components/ModeUser';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from 'app/authSlice';
 
 Header.propTypes = {
 };
 const { Search } = Input;
 
 function Header(props) {
-    const [onLogin, setOnLogin] = useState(true);
+    const dispatch = useDispatch();
+
+    const menu = (
+        <Menu
+            items={[
+                {
+                    label: (
+                        <Link to="/user" state={{ tab: '1', }} >
+                            <UserOutlined /> Thông tin cá nhân
+                        </Link>
+                    ),
+                    key: '0',
+                },
+                {
+                    label: (
+                        <Link to="/user" state={{ tab: '2', }} >
+                            <HistoryOutlined /> Lịch sử mua hàng
+                        </Link>
+                    ),
+                    key: '1',
+                },
+                {
+                    label: (
+                        <Link to="/user" state={{ tab: '3', }} >
+                            <HeartOutlined /> Sản phẩm yêu thích
+                        </Link>
+                    ),
+                    key: '2',
+                },
+                {
+                    label: (
+                        <div onClick={() => dispatch(logout())}>
+                            <LogoutOutlined /> Đăng xuất
+                        </div>
+                    ),
+                    key: '3',
+                },
+            ]}
+        />
+    );
+    const { user, isAuth } = useSelector(state => state.auth);
+
     return (
         <div className="header">
             <div className="test">
@@ -19,10 +62,26 @@ function Header(props) {
                     <div className="left">
                         <span><b>1800 6868 </b>(miễn phí) - Giao hàng toàn quốc</span>
                     </div>
-                    {!onLogin ?
-                        <ModelLogin />
+                    {isAuth ?
+                        <div className="mode-user">
+                            <Dropdown
+                                overlay={menu}
+                                trigger={['click']}
+                                placement="bottom"
+                            >
+                                <a onClick={(e) => e.preventDefault()}>
+                                    <Space>
+                                        <div className="avatar">
+                                            <Avatar src={user?.TV_AVATAR || "https://joeschmoe.io/api/v1/random"} />
+                                        </div>
+                                        {user?.TV_HOTEN}
+                                    </Space>
+                                </a>
+                            </Dropdown>
+                        </div>
+
                         :
-                        <ModeUser />
+                        <ModelLogin />
                     }
 
                 </div>

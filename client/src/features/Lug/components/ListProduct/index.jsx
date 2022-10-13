@@ -4,15 +4,23 @@ import { Col, Row } from 'antd';
 import ProductWisper from '../ProductSwiper';
 
 ListProduct.propTypes = {
-
+    productList: PropTypes.array,
 };
 
+ListProduct.defaultProps = {
+    productList: []
+}
+
 function ListProduct(props) {
-    const products = new Array(20).fill(0);
+    const { productList } = props;
     return (
         <div>
             <Row>
-                {products.map((value, index) => <Col sm={18} md={12} lg={6} index={index} >< ProductWisper /></Col>)}
+                {productList.map((product, index) =>
+                    <Col sm={18} md={12} lg={6} index={index} >
+                        < ProductWisper product={product} />
+                    </Col>
+                )}
             </Row>
         </div>
     );

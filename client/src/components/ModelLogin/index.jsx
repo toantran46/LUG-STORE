@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
-import { Button, Drawer, Form, Input, DatePicker, Space, Radio } from 'antd';
-import { FacebookFilled, GoogleOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Drawer, Form, Input, DatePicker, Space, Radio, Select } from 'antd';
+import { FacebookFilled, FacebookOutlined, GoogleOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
+import { LoginSocialFacebook, LoginSocialGoogle } from 'reactjs-social-login';
+import { useDispatch, useSelector } from 'react-redux';
+
 import "./ModelLogin.scss";
 import { Link } from 'react-router-dom';
+import { getMe, login, login_socialMedia } from 'app/authSlice';
+import { toastError, toastSucsess } from 'utils/notification';
+import { thanhvienApi } from 'api/thanhvienApi';
 
 ModelLogin.propTypes = {
 
@@ -11,6 +17,9 @@ ModelLogin.propTypes = {
 function ModelLogin(props) {
     const [open, setOpen] = useState(false);
     const [onLogin, setOnLogin] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
+    const dispatch = useDispatch()
+    const [formLogin] = Form.useForm();
 
     const showDrawer = () => {
         setOpen(true);
@@ -19,9 +28,6 @@ function ModelLogin(props) {
     const onClose = () => {
         setOpen(false);
     };
-    const onFinish = (values) => {
-        console.log('Received values of form: ', values);
-    };
 
     const handRegister = () => {
         setOnLogin(false);
@@ -29,6 +35,69 @@ function ModelLogin(props) {
     const handLogin = () => {
         setOnLogin(true);
     }
+
+    const handleLogin = async (values) => {
+        setIsLoading(true)
+        const { error, payload } = await dispatch(login(values));
+
+        if (error) {
+            const { message } = payload.response.data;
+            toastError(message);
+            setIsLoading(false)
+            return;
+        } else {
+            setOpen(false);
+            setIsLoading(false);
+            toastSucsess("Đăng nhập thành công");
+        }
+    }
+
+    const onLoginSuccess = async ({ provider, data }) => {
+        console.log(data);
+        const token = data.access_token || data.accessToken;
+        const HO_TEN = (data.family_name && data.given_name) ? data.family_name + ' ' + data.given_name : '';
+        const accountType = provider + "_mxh";
+        const user = {
+            USER_ID: data.id,
+            TV_HOTEN: data.name || HO_TEN,
+            TV_SODIENTHOAI: data.phone || '',
+            TV_EMAIL: data.email,
+            TV_AVATAR: data.picture?.data?.url || data.picture,
+            TV_LOAITAIKHOAN: accountType,
+        }
+        console.log({ data, user })
+        // send to sever
+        setIsLoading(true);
+        await dispatch(login_socialMedia(user));
+        // dispatch(switch_screenLogin(false));
+        setOpen(false);
+        setIsLoading(false);
+        toastSucsess("Đăng nhập thành công");
+
+    }
+
+    const onLoginError = (error) => {
+        console.log(error);
+        toastError("Đã có lỗi xảy ra");
+    }
+
+    const handleSaveRegister = async (values) => {
+        try {
+            setIsLoading(true);
+
+            console.log(values)
+
+            const { message } = await thanhvienApi.register(values);
+            setIsLoading(false);
+            toastSucsess(message);
+            setOnLogin(true);
+
+        } catch (error) {
+            setIsLoading(false);
+            toastError(error.response.data.message);
+        }
+    }
+
     return (
         <div className="model-login">
             <Button type="primary" onClick={showDrawer}>
@@ -36,17 +105,19 @@ function ModelLogin(props) {
             </Button>
             <Drawer placement="right" onClose={onClose} visible={open}>
                 {onLogin ?
-                    <div className="login">
-                        <div className="title">ĐĂNG NHẬP</div>
-                        <Form
-                            size='large'
-                            name="normal_login"
-                            className="login-form"
-                            onFinish={onFinish}
-                        >
+                    <Form
+                        form={formLogin}
+                        size='large'
+                        name="normal_login"
+                        className="login-form"
+                        onFinish={handleLogin}
+                    >
+                        <div className="login">
+                            <div className="title">ĐĂNG NHẬP</div>
+
                             <Form.Item
                                 className='email-form'
-                                name="email"
+                                name="EMAIL"
                                 rules={[
                                     {
                                         required: true,
@@ -61,7 +132,7 @@ function ModelLogin(props) {
                                 <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Email" />
                             </Form.Item>
                             <Form.Item
-                                name="password"
+                                name="MATKHAU"
                                 className='passwd-form'
                                 rules={[
                                     {
@@ -81,37 +152,55 @@ function ModelLogin(props) {
                                 />
                             </Form.Item>
                             <Form.Item className='btn-form'>
-                                <Button type="primary" htmlType="submit" block className="login-form-button">
+                                <Button
+                                    type="primary"
+                                    loading={isLoading}
+                                    htmlType="submit" block
+                                    className="login-form-button"
+                                >
                                     Đăng nhập
                                 </Button>
                             </Form.Item>
-                        </Form>
-                        <div className="or">
-                            <span>Hoặc</span>
+
+                            <div className="or">
+                                <span>Hoặc</span>
+                            </div>
+                            <div className="social-login">
+                                <div className="fb-login">
+                                    <LoginSocialFacebook
+                                        appId={process.env.REACT_APP_FB_CLIENT_ID || ''}
+                                        // scope='https://www.Facebookapis.com/auth/userinfo.email'
+                                        onResolve={onLoginSuccess}
+                                        onReject={onLoginError}
+                                        onLoginStart={() => console.log(process.env.REACT_APP_FB_CLIENT_ID)}
+                                    >
+                                        <Button type="primary" loading={isLoading} block>
+                                            <span><FacebookOutlined /></span>
+                                            Đăng nhập với Facebook
+                                        </Button>
+                                    </LoginSocialFacebook>
+                                </div>
+                                <div className="gg-login">
+                                    <LoginSocialGoogle
+                                        client_id={process.env.REACT_APP_GG_CLIENT_ID || ''}
+                                        // scope='https://www.googleapis.com/auth/userinfo.email'
+                                        onResolve={onLoginSuccess}
+                                        onReject={onLoginError}
+                                        onLoginStart={() => console.log("values")}
+                                    >
+                                        <Button type="primary" loading={isLoading} block danger>
+                                            <span><GoogleOutlined /></span>
+                                            Đăng nhập với Google
+                                        </Button>
+                                    </LoginSocialGoogle>
+                                </div>
+                                <div className="not-account">
+                                    <span>Chưa có tài khoản ? </span>
+                                    <span onClick={handRegister} className='regis'>Đăng kí ngay</span>
+                                </div>
+                            </div>
                         </div>
-                        <div className="social-login">
-                            <div className="fb-login">
-                                <Link to="">
-                                    <Button type="primary" htmlType="submit" block>
-                                        <span><FacebookFilled /></span>
-                                        Đăng nhập với Facebook
-                                    </Button>
-                                </Link>
-                            </div>
-                            <div className="gg-login">
-                                <Link to="">
-                                    <Button type="primary" htmlType="submit" block danger>
-                                        <span><GoogleOutlined /></span>
-                                        Đăng nhập với Google
-                                    </Button>
-                                </Link>
-                            </div>
-                            <div className="not-account">
-                                <span>Chưa có tài khoản ? </span>
-                                <span onClick={handRegister} className='regis'>Đăng kí ngay</span>
-                            </div>
-                        </div>
-                    </div>
+                    </Form>
                     :
                     <div className="register">
                         <div className="title">ĐĂNG KÍ</div>
@@ -119,11 +208,11 @@ function ModelLogin(props) {
                             layout='vertical'
                             name="register"
                             className="register-form"
-
                             scrollToFirstError
+                            onFinish={handleSaveRegister}
                         >
                             <Form.Item
-                                name="email"
+                                name="TV_EMAIL"
                                 label="E-mail"
                                 rules={[
                                     {
@@ -132,7 +221,7 @@ function ModelLogin(props) {
                                     },
                                     {
                                         required: true,
-                                        message: "Vui lòng điền email",
+                                        message: "Email không được bỏ trống",
                                     }
                                 ]}
                             >
@@ -140,12 +229,12 @@ function ModelLogin(props) {
 
                             </Form.Item>
                             <Form.Item
-                                name="password"
+                                name="MATKHAU"
                                 label="Mật khẩu"
                                 rules={[
                                     {
                                         required: true,
-                                        message: "Vui lòng nhập mật khẩu",
+                                        message: "Mật khẩu không được bỏ trống",
                                     },
                                     {
                                         min: 4,
@@ -157,18 +246,18 @@ function ModelLogin(props) {
                                 <Input.Password placeholder='Mật khẩu ít nhất có 4 kí tự' />
                             </Form.Item>
                             <Form.Item
-                                name="confirmPass"
+                                name="TV_COMFIRMPASSWORD"
                                 label="Xác nhận mật khẩu"
                                 dependencies={['password']}
                                 hasFeedback
                                 rules={[
                                     {
                                         required: true,
-                                        message: "Vui lòng nhập mật khẩu",
+                                        message: "Mật khẩu không được bỏ trống",
                                     },
                                     ({ getFieldValue }) => ({
                                         validator(_, value) {
-                                            if (!value || getFieldValue('password') === value) {
+                                            if (!value || getFieldValue('MATKHAU') === value) {
                                                 return Promise.resolve();
                                             }
                                             return Promise.reject(new Error('Mật khẩu không trùng khớp'));
@@ -179,49 +268,27 @@ function ModelLogin(props) {
                                 <Input.Password placeholder='Mật khẩu ít nhất có 4 kí tự' />
                             </Form.Item>
                             <Form.Item
-                                name="name"
+                                name="TV_HOTEN"
                                 label="Họ tên"
                                 rules={[
                                     {
                                         required: true,
-                                        message: "Vui lòng điền họ tên",
+                                        message: "Họ tên không được bỏ trống",
                                     }
                                 ]}
                             >
                                 <Input placeholder='Họ tên' />
                             </Form.Item>
-                            <Form.Item
-                                label="Ngày sinh"
-                                name="birthday"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: "Vui lòng chọn ngày sinh"
-                                    }
-                                ]}
-                            >
-                                <Space style={{ width: '100%' }}>
-                                    <DatePicker />
-                                </Space>
+                            <Form.Item label="Giới tính" name="TV_GIOITINH">
+                                <Select options={[{ value: 'Nam', labe: 'Nam' }, { value: 'Nữ', labe: 'Nữ' }]} />
                             </Form.Item>
                             <Form.Item
-                                label="Giới tính"
-                                name="gender"
-                            >
-                                <Space style={{ width: '100%' }}>
-                                    <Radio.Group defaultValue={1}>
-                                        <Radio value={1}>Nam</Radio>
-                                        <Radio value={2}>Nữ</Radio>
-                                    </Radio.Group>
-                                </Space>
-                            </Form.Item>
-                            <Form.Item
-                                name="phone"
+                                name="TV_SODIENTHOAI"
                                 label="Số điện thoại"
                                 rules={[
                                     {
                                         required: true,
-                                        message: "Vui lòng nhập số điện thoại"
+                                        message: "Số điện thoại không được bỏ trống"
                                     },
                                     {
                                         min: 10,
@@ -237,18 +304,18 @@ function ModelLogin(props) {
                                 <Input placeholder='Số điện thoại' />
                             </Form.Item>
                             <Form.Item
-                                name="address"
+                                name="TV_DIACHI"
                                 label="Địa chỉ"
                                 rules={[
                                     {
                                         required: true,
-                                        message: "Vui lòng nhập địa chỉ "
+                                        message: "Địa chỉ không được bỏ trống"
                                     },
                                 ]}
                             >
                                 <Input placeholder='Địa chỉ' />
                             </Form.Item>
-                            <Button type="primary" htmlType="submit" block>
+                            <Button type="primary" htmlType="submit" block loading={isLoading}>
                                 Đăng kí
                             </Button>
                         </Form>

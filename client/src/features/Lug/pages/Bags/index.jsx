@@ -13,6 +13,8 @@ Bags.propTypes = {
 
 };
 
+
+
 function Bags(props) {
     return (
         <div>

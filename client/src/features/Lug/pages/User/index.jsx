@@ -6,17 +6,26 @@ import "./User.scss";
 import { Tabs } from 'antd';
 import UserInfo from 'features/Lug/components/UserInfo/indes';
 import OrderHistory from 'features/Lug/components/OrderHistory';
+import { useLocation } from 'react-router-dom';
 User.propTypes = {
 
 };
 
 function User(props) {
+    const { state } = useLocation()
+    const [currentTab, setCurrentTab] = React.useState();
+    React.useEffect(() => {
+        setCurrentTab(state.tab || '1')
+    }, [state])
+    console.log(currentTab);
+    console.log(state);
     return (
         <div className='user'>
             <Header />
             <div className="container">
                 <Tabs
-                    defaultActiveKey="1"
+                    onChange={(tab) => setCurrentTab(tab)}
+                    activeKey={currentTab}
                     tabPosition='left'
                 >
                     <Tabs.TabPane tab="> Thông tin cá nhân" key="1">
@@ -31,7 +40,6 @@ function User(props) {
                         <OrderHistory />
                     </Tabs.TabPane>
                 </Tabs>
-
             </div>
             <Footer />
         </div>

@@ -1,6 +1,13 @@
 .menu{
+    .title_custom{
+        font-size: 15px;
+        font-weight: 500;     
+    }
     &__brand{
         margin-bottom: 10px;
+        .list-brand{
+            display: block;
+        }
     }
     &__price{
         .top-price{
@@ -80,9 +87,9 @@
                         border: 2px solid #777778;
                     }
                 }
-                .swatch-green{
+                .swatch-grey{
                     p{
-                        background-color: green;
+                        background-color: grey;
                         cursor: pointer;
                         display: block;
                         border: 1px solid #9e9fa1;

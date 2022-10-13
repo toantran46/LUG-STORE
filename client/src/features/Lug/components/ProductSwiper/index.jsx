@@ -6,10 +6,15 @@ import './ProductSwiper.scss';
 import { Link } from 'react-router-dom';
 
 ProductWisper.propTypes = {
-
+    product: PropTypes.object,
 };
 
+ProductWisper.defaultProps = {
+    product: {},
+}
+
 function ProductWisper(props) {
+    const { product } = props;
     return (
         <div className="product-wrapper">
             <div className="product-wrapper__bannerAds">
@@ -27,22 +32,22 @@ function ProductWisper(props) {
                     <HeartOutlined />
                 </div>
             </div>
-            <Link to="/products/1">
-                <img width={200} height={200} src="https://bizweb.sapocdn.net/thumb/large/100/349/716/products/8689-grey-18-s-square-2.jpg?v=1660807558000" alt="" />
+            <Link to={`/products/${product.SP_MA}`}>
+                <img width={200} height={200} src={product.HASP_DUONGDAN} alt="" />
                 <div className="product-wrapper__product-info">
                     <div className="product-wrapper__product-info__name">
-                        <b>Bruno Cavalli</b>
+                        <b>{product.TH_TENTHUONGHIEU}</b>
                     </div>
                     <div className="product-wrapper__product-info__desc">
-                        Balo Cavalli 6868
+                        {product.SP_TEN}
                     </div>
                     <div className="product-wrapper__product-info__price">
                         <div className="price-discounted">
-                            <span>1.290.000₫</span>
+                            <span>{product.SP_GIAGOC}₫</span>
                         </div>
-                        <div className="price-standar">
+                        {/* <div className="price-standar">
                             <span>1.842.857₫</span>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </Link>

@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Select, Slider } from 'antd';
+import { Checkbox, Select, Slider } from 'antd';
 import './MenuSort.scss';
+import { mausacApi } from 'api/mausacApi';
+import { thuonghieuApi } from 'api/thuonghieuApi';
 
 MenuSort.propTypes = {
 
@@ -9,6 +11,42 @@ MenuSort.propTypes = {
 const { Option } = Select;
 
 function MenuSort(props) {
+    const [isRegencys, setIsRegencys] = React.useState()
+    const [isColors, setIsColors] = React.useState()
+    const handleChangeRegency = () => {
+
+    }
+
+    React.useEffect(() => {
+        const fetch_regencys = async () => {
+            try {
+                const { result } = await thuonghieuApi.getAll();
+                // console.log(result)
+                setIsRegencys(result?.map((e) => (
+                    { label: e.TH_TENTHUONGHIEU, value: e.TH_MATHUONGHIEU }
+                )));
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        const fetch_colors = async () => {
+            try {
+                const { result } = await mausacApi.getAll();
+                // console.log(result)
+                setIsColors(result?.map((e) => (
+                    <li className={`swatch-${e.MS_TENMAU}`}>
+                        <p title={e.MS_TENMAU}></p>
+                    </li>
+                )));
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetch_regencys();
+        fetch_colors();
+    }, [])
     const onChange = (value) => {
         console.log('onChange: ', value);
     };
@@ -19,21 +57,13 @@ function MenuSort(props) {
     return (
         <div className='menu'>
             <div className="menu__brand">
-                <p>Thương hiệu</p>
-                <Select placeholder="Chọn thương hiệu" style={{ width: 200 }}>
-                    <Option value="">
-                        Aber
-                    </Option>
-                    <Option value="">
-                        Aber
-                    </Option>
-                    <Option value="">
-                        Aber
-                    </Option>
-                </Select>
+                <p className='title_custom'>Thương hiệu</p>
+                <div className="list-brand">
+                    <Checkbox.Group onChange={handleChangeRegency} options={isRegencys} />
+                </div>
             </div>
             <div className="menu__price">
-                <p>Mức giá</p>
+                <p className='title_custom'>Mức giá</p>
                 <Slider
                     max={2000000}
                     range
@@ -44,10 +74,11 @@ function MenuSort(props) {
                 />
             </div>
             <div className="menu__color">
-                <p>Màu sắc</p>
+                <p className='title_custom'>Màu sắc</p>
                 <div className="swatch-list-color">
                     <ul className='list-color'>
-                        <li className='swatch-yellow'>
+                        {isColors && isColors}
+                        {/* <li className='swatch-yellow'>
                             <p title='yellow'></p>
                         </li>
                         <li className='swatch-red'>
@@ -67,7 +98,7 @@ function MenuSort(props) {
                         </li>
                         <li className='swatch-blue'  >
                             <p title='blue'></p>
-                        </li>
+                        </li> */}
                     </ul>
                 </div>
             </div>

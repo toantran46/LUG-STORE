@@ -1,19 +1,91 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Avatar } from 'antd';
+import { Avatar, Modal, Select } from 'antd';
 import { CameraOutlined, UploadOutlined } from '@ant-design/icons';
 import { Button, Upload, Form, Input, Tabs, DatePicker, Radio, Space } from 'antd';
 import "./UserInfo.scss";
+import { useDispatch, useSelector } from 'react-redux';
+import TextArea from 'antd/lib/input/TextArea';
+import { thanhvienApi } from 'api/thanhvienApi';
+import { toastError, toastSucsess } from 'utils/notification';
+import { getMe } from 'app/authSlice';
 UserInfo.propTypes = {
 
 };
-const dateFormat = 'YYYY-MM-DD';
+
+const getBase64 = (file) =>
+    new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+
+        reader.onload = () => resolve(reader.result);
+
+        reader.onerror = (error) => reject(error);
+    });
 
 function UserInfo(props) {
-    const onChange = (date, dateString) => {
-        console.log(date, dateString);
+    const dispatch = useDispatch();
+    const { user } = useSelector(state => state.auth);
+    const [form] = Form.useForm();
+    const [isLoading, setIsLoading] = React.useState(false);
+    const [fileList, setFileList] = React.useState({});
+
+    const [previewOpen, setPreviewOpen] = React.useState(false);
+    const [previewImage, setPreviewImage] = React.useState('');
+    const [previewTitle, setPreviewTitle] = React.useState('');
+
+    // console.log(user);
+
+    const initialValues = {
+        TV_AVATAR: user?.TV_AVATAR,
+        TV_EMAIL: user?.TV_EMAIL,
+        TV_HOTEN: user?.TV_HOTEN,
+        TV_GIOITINH: user?.TV_GIOITINH,
+        TV_DIACHI: user?.TV_DIACHI,
+        TV_SODIENTHOAI: user?.TV_SODIENTHOAI,
+    }
+
+    const handleChange = ({ file: newFileList }) => setFileList(newFileList);
+
+    const handleUpload = (list, fileList) => {
+        console.log(list);
+        if (list.type == "image/png" || list.type == "image/jpg" || list.type == "image/jpeg") {
+            return false
+        }
+        else {
+            return true
+        }
+    }
+
+    const handleCancelPreview = () => setPreviewOpen(false);
+
+    const handlePreview = async (file) => {
+        if (!file.url && !file.preview) {
+            file.preview = await getBase64(file.originFileObj);
+        }
+
+        setPreviewImage(file.url || file.preview);
+        setPreviewOpen(true);
+        setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
     };
+
+    const handleUpdate = async (values) => {
+        try {
+            setIsLoading(true);
+
+            console.log(values)
+
+            const { message } = await thanhvienApi.update(user?.TV_ID, values);
+            dispatch(getMe());
+            setIsLoading(false);
+            toastSucsess(message);
+
+        } catch (error) {
+            setIsLoading(false);
+            toastError(error.response.data.message);
+        }
+    }
     return (
         <div className='user-info'>
             <div className="content">
@@ -21,40 +93,94 @@ function UserInfo(props) {
                     <h4>THÔNG TIN CÁ NHÂN</h4>
                 </div>
                 <div className="avatar">
-                    <Avatar size={100} src="https://joeschmoe.io/api/v1/random" />
+                    <Avatar size={100} src={user?.TV_AVATAR || "https://joeschmoe.io/api/v1/random"} />
                 </div>
-                <Upload {...props}>
-                    <Button><CameraOutlined style={{ fontSize: 20 }} /></Button>
-                </Upload>
                 <Form
                     layout='vertical'
+                    form={form}
+                    onFinish={handleUpdate}
+                    initialValues={initialValues}
                 >
-                    <Form.Item label="Email">
-                        <Input value={"trongtoan@gmail.com"} />
+                    <Form.Item
+                        name="TV_AVATAR"
+                    >
+                        <Upload
+                            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                            listType="picture-card"
+                            onPreview={handlePreview}
+                            onChange={handleChange}
+                            beforeUpload={handleUpload}
+                            maxCount={1}
+                        >
+                            <UploadOutlined className='pr-1' />Tải lên
+                        </Upload>
+                        <Modal
+                            visible={previewOpen}
+                            title={previewTitle}
+                            footer={null}
+                            onCancel={handleCancelPreview}
+                        >
+                            <img
+                                alt="example"
+                                style={{
+                                    width: '100%',
+                                }}
+                                src={previewImage}
+                            />
+                        </Modal>
                     </Form.Item>
-                    <Form.Item label="Họ tên">
-                        <Input value={"Trần Toàn"} />
+                    <Form.Item
+                        label="Email"
+                        name="TV_EMAIL"
+                    >
+                        <Input disabled />
                     </Form.Item>
-                    <Form.Item label="Ngày sinh">
-                        <Space style={{ width: '100%' }}>
-                            <DatePicker defaultValue={moment('2015-06-06', dateFormat)} onChange={onChange} />
-                        </Space>
+                    <Form.Item
+                        label="Họ tên"
+                        name="TV_HOTEN"
+                        rules={[
+                            {
+                                required: true,
+                                message: "Họ tên không được bỏ trống"
+                            },
+                        ]}
+                    >
+                        <Input />
                     </Form.Item>
-                    <Form.Item label="Giới tính">
-                        <Space style={{ width: '100%' }}>
-                            <Radio.Group defaultValue={1}>
-                                <Radio value={1}>Nam</Radio>
-                                <Radio value={2}>Nữ</Radio>
-                            </Radio.Group>
-                        </Space>
+                    <Form.Item
+                        label="Giới tính"
+                        name="TV_GIOITINH"
+                    >
+                        <Select options={[{ value: 'Nam', labe: 'Nam' }, { value: 'Nữ', labe: 'Nữ' }]} />
                     </Form.Item>
-                    <Form.Item label="Số điện thoại">
-                        <Input value={"012301321"} />
+                    <Form.Item
+                        label="Số điện thoại"
+                        name="TV_SODIENTHOAI"
+                        rules={[
+                            {
+                                required: true,
+                                message: "Số điện thoại không được bỏ trống"
+                            },
+                            {
+                                min: 10,
+                                max: 10,
+                                message: "Vui lòng nhập đúng số điện thoại",
+                            },
+                            {
+                                value: [0 - 9],
+                                message: "Vui lòng chỉ nhập số",
+                            },
+                        ]}
+                    >
+                        <Input />
                     </Form.Item>
-                    <Form.Item label="Địa chỉ">
-                        <Input value={"123 Nguyễn Trãi"} />
+                    <Form.Item
+                        label="Địa chỉ"
+                        name="TV_DIACHI"
+                    >
+                        <TextArea />
                     </Form.Item>
-                    <Button htmlType='submit' type="primary" block>
+                    <Button htmlType='submit' loading={isLoading} type="primary" block>
                         Cập nhật thông tin
                     </Button>
 
