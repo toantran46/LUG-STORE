@@ -5,16 +5,14 @@ import './MenuSort.scss';
 import { mausacApi } from 'api/mausacApi';
 import { thuonghieuApi } from 'api/thuonghieuApi';
 
-MenuSort.propTypes = {
-
-};
-const { Option } = Select;
-
 function MenuSort(props) {
     const [isRegencys, setIsRegencys] = React.useState()
     const [isColors, setIsColors] = React.useState()
-    const handleChangeRegency = () => {
-
+    const [colorClick, setColorClick] = React.useState();
+    const [priceFrom, setPriceFrom] = React.useState();
+    const [priceTo, setPriceTo] = React.useState();
+    const handleChangeRegency = (value) => {
+        props.brandChange(value)
     }
 
     React.useEffect(() => {
@@ -33,12 +31,8 @@ function MenuSort(props) {
         const fetch_colors = async () => {
             try {
                 const { result } = await mausacApi.getAll();
-                // console.log(result)
-                setIsColors(result?.map((e) => (
-                    <li className={`swatch-${e.MS_TENMAU}`}>
-                        <p title={e.MS_TENMAU}></p>
-                    </li>
-                )));
+                console.log(result)
+                setIsColors(result);
 
             } catch (error) {
                 console.log(error);
@@ -47,13 +41,19 @@ function MenuSort(props) {
         fetch_regencys();
         fetch_colors();
     }, [])
-    const onChange = (value) => {
-        console.log('onChange: ', value);
-    };
+    // const onChange = (value) => {
+    //     console.log('onChange: ', value);
+    // };
 
     const onAfterChange = (value) => {
         console.log('onAfterChange: ', value);
+        props.price(value)
     };
+    const handleClickColor = (data) => {
+        setColorClick(data);
+        props.colorChange(data.MS_MAMAU);
+        // console.log(data)
+    }
     return (
         <div className='menu'>
             <div className="menu__brand">
@@ -65,11 +65,10 @@ function MenuSort(props) {
             <div className="menu__price">
                 <p className='title_custom'>Mức giá</p>
                 <Slider
-                    max={2000000}
+                    max={3000000}
                     range
                     step={100000}
-                    defaultValue={[200000, 500000]}
-                    onChange={onChange}
+                    defaultValue={[100000, 3000000]}
                     onAfterChange={onAfterChange}
                 />
             </div>
@@ -77,28 +76,11 @@ function MenuSort(props) {
                 <p className='title_custom'>Màu sắc</p>
                 <div className="swatch-list-color">
                     <ul className='list-color'>
-                        {isColors && isColors}
-                        {/* <li className='swatch-yellow'>
-                            <p title='yellow'></p>
-                        </li>
-                        <li className='swatch-red'>
-                            <p title='red'></p>
-                        </li>
-                        <li className='swatch-white'>
-                            <p title='white'></p>
-                        </li>
-                        <li className='swatch-black'>
-                            <p title='black'></p>
-                        </li>
-                        <li className='swatch-green'>
-                            <p title='green'></p>
-                        </li>
-                        <li className='swatch-orange'  >
-                            <p title='orange'></p>
-                        </li>
-                        <li className='swatch-blue'  >
-                            <p title='blue'></p>
-                        </li> */}
+                        {isColors?.map((e) => (
+                            <li key={e.MS_MAMAU} onClick={() => handleClickColor(e)} className={`swatch ${colorClick?.MS_MAMAU === e.MS_MAMAU ? 'active' : ''}`}>
+                                <p style={{ backgroundColor: e.MS_TENMAU }} title={`${e.MS_TENMAU}`}></p>
+                            </li>
+                        ))}
                     </ul>
                 </div>
             </div>

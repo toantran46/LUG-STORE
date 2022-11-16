@@ -7,6 +7,9 @@ import { Tabs } from 'antd';
 import UserInfo from 'features/Lug/components/UserInfo/indes';
 import OrderHistory from 'features/Lug/components/OrderHistory';
 import { useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetch_order, fetch_wishlist } from 'features/Lug/userSlice';
+import WishList from 'features/Lug/components/WishList';
 User.propTypes = {
 
 };
@@ -14,11 +17,18 @@ User.propTypes = {
 function User(props) {
     const { state } = useLocation()
     const [currentTab, setCurrentTab] = React.useState();
+    const { user } = useSelector(state => state.auth)
+    console.log(user)
+    const dispatch = useDispatch();
+    const {
+        pagination } = useSelector(state => state.userInfo);
+    // console.log(pagination);
+    React.useEffect(() => {
+        dispatch(fetch_order({ _limit: pagination.order._limit, _page: pagination.order._page, action: 'get_order', TV_ID: user?.TV_ID }));
+    }, [pagination.order, user?.TV_ID])
     React.useEffect(() => {
         setCurrentTab(state.tab || '1')
     }, [state])
-    console.log(currentTab);
-    console.log(state);
     return (
         <div className='user'>
             <Header />
@@ -37,7 +47,7 @@ function User(props) {
                         <OrderHistory />
                     </Tabs.TabPane>
                     <Tabs.TabPane tab="> Sản phẩm yêu thích" key="3">
-                        <OrderHistory />
+                        <WishList />
                     </Tabs.TabPane>
                 </Tabs>
             </div>

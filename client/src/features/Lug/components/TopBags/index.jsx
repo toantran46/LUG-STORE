@@ -15,8 +15,8 @@ function TopBags(props) {
     React.useEffect(() => {
         const fetch_bag_product = async () => {
             try {
-                const { result } = await sanphamApi.getAll({ LSP_MALOAI: 'KUF0EuDO', filterBy: 'LSP_MALOAI', _page: 1, _limit: 8 })
-                console.log(result);
+                const { result } = await sanphamApi.getAll({ filterBy: JSON.stringify({ LSP_MALOAI: ['KUF0EuDO'] }), _page: 1, _limit: 8 })
+                // console.log(result);
                 setProductListBag(result)
 
             } catch (error) {
@@ -25,6 +25,10 @@ function TopBags(props) {
         }
         fetch_bag_product();
     }, [])
+
+    React.useEffect(() => {
+        // console.log(productListBag);
+    }, [productListBag])
     return (
         <div className='TopBags'>
             <SwiperCustom slidesPerView={4} spaceBetween={20}>

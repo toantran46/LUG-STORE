@@ -21,119 +21,28 @@
                 display: flex;
                 padding-left: unset;
                 li{
+                    overflow: hidden;
                     margin-right: 8px;
+                    border-radius: 2rem;
+                    padding: 2px;
+                    border: 1px solid #fff;
                 }
-                .swatch-yellow{
+                li:hover, li.active{
+                    border: 1px solid #484848;
+                }
+                .swatch{
                     p{
-                        background-color: yellow;
                         cursor: pointer;
                         display: block;
-                        border: 1px solid #9e9fa1;
-                        border-radius: 2rem;
                         height: 1.5rem;
                         width: 1.5rem;
                         padding: 0;
                         text-indent: -999em;
-                    }
-                    p:hover{
-                        border: 2px solid #777778;
-                    }
-                }
-                .swatch-red{
-                    p{
-                        background-color: red;
-                        cursor: pointer;
-                        display: block;
+                        margin-bottom: 0;
                         border: 1px solid #9e9fa1;
                         border-radius: 2rem;
-                        height: 1.5rem;
-                        width: 1.5rem;
-                        padding: 0;
-                        text-indent: -999em;
                     }
-                    p:hover{
-                        border: 2px solid #777778;
-                    }
-                }
-                .swatch-white{
-                    p{
-                        background-color: white;
-                        cursor: pointer;
-                        display: block;
-                        border: 1px solid #9e9fa1;
-                        border-radius: 2rem;
-                        height: 1.5rem;
-                        width: 1.5rem;
-                        padding: 0;
-                        text-indent: -999em;
-                    }
-                    p:hover{
-                        border: 2px solid #777778;
-                    }
-                }
-                .swatch-black{
-                    p{
-                        background-color: black;
-                        cursor: pointer;
-                        display: block;
-                        border: 1px solid #9e9fa1;
-                        border-radius: 2rem;
-                        height: 1.5rem;
-                        width: 1.5rem;
-                        padding: 0;
-                        text-indent: -999em;
-                    }
-                    p:hover{
-                        border: 2px solid #777778;
-                    }
-                }
-                .swatch-grey{
-                    p{
-                        background-color: grey;
-                        cursor: pointer;
-                        display: block;
-                        border: 1px solid #9e9fa1;
-                        border-radius: 2rem;
-                        height: 1.5rem;
-                        width: 1.5rem;
-                        padding: 0;
-                        text-indent: -999em;
-                    }
-                    p:hover{
-                        border: 2px solid #777778;
-                    }
-                }
-                .swatch-orange{
-                    p{
-                        background-color: orange;
-                        cursor: pointer;
-                        display: block;
-                        border: 1px solid #9e9fa1;
-                        border-radius: 2rem;
-                        height: 1.5rem;
-                        width: 1.5rem;
-                        padding: 0;
-                        text-indent: -999em;
-                    }
-                    p:hover{
-                        border: 2px solid #777778;
-                    }
-                }
-                .swatch-blue{
-                    p{
-                        background-color: blue;
-                        cursor: pointer;
-                        display: block;
-                        border: 1px solid #9e9fa1;
-                        border-radius: 2rem;
-                        height: 1.5rem;
-                        width: 1.5rem;
-                        padding: 0;
-                        text-indent: -999em;
-                    }
-                    p:hover{
-                        border: 2px solid #777778;
-                    }
+                    
                 }
             }
         }

@@ -17,7 +17,7 @@ function ListProduct(props) {
         <div>
             <Row>
                 {productList.map((product, index) =>
-                    <Col sm={18} md={12} lg={6} index={index} >
+                    <Col index={index} >
                         < ProductWisper product={product} />
                     </Col>
                 )}

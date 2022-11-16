@@ -19,7 +19,7 @@ export const getMe = createAsyncThunk("auth/getMe", async (data, { rejectWithVal
 
     try {
         const { result } = await thanhvienApi.getMe();
-        // dispatch(switch_screenLogin(false)); 
+        // console.log(result)
         return result;
 
     } catch (error) {

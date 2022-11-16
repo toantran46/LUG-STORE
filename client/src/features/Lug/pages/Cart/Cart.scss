@@ -58,6 +58,11 @@
                         padding-right: 10px;
                     }
                 }
+                .item-quantity{
+                    display: flex;
+                    min-height: 150px;
+                    align-items: center;
+                }
                 .item-total{
                     .discounted{
                         color: #e9252c;

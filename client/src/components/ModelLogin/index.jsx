@@ -5,10 +5,11 @@ import { LoginSocialFacebook, LoginSocialGoogle } from 'reactjs-social-login';
 import { useDispatch, useSelector } from 'react-redux';
 
 import "./ModelLogin.scss";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getMe, login, login_socialMedia } from 'app/authSlice';
 import { toastError, toastSucsess } from 'utils/notification';
 import { thanhvienApi } from 'api/thanhvienApi';
+import { showLogin } from 'features/Lug/userSlice';
 
 ModelLogin.propTypes = {
 
@@ -19,14 +20,16 @@ function ModelLogin(props) {
     const [onLogin, setOnLogin] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch()
+    const { logged } = useSelector(state => state.userInfo);
+    const { user } = useSelector(state => state.auth)
     const [formLogin] = Form.useForm();
-
+    const navigate = useNavigate();
     const showDrawer = () => {
         setOpen(true);
     };
 
     const onClose = () => {
-        setOpen(false);
+        dispatch(showLogin(false))
     };
 
     const handRegister = () => {
@@ -48,17 +51,17 @@ function ModelLogin(props) {
         } else {
             setOpen(false);
             setIsLoading(false);
+            console.log(payload)
             toastSucsess("Đăng nhập thành công");
         }
     }
-
     const onLoginSuccess = async ({ provider, data }) => {
-        console.log(data);
+        // console.log(data);
         const token = data.access_token || data.accessToken;
         const HO_TEN = (data.family_name && data.given_name) ? data.family_name + ' ' + data.given_name : '';
         const accountType = provider + "_mxh";
         const user = {
-            USER_ID: data.id,
+            TV_ID: data.id,
             TV_HOTEN: data.name || HO_TEN,
             TV_SODIENTHOAI: data.phone || '',
             TV_EMAIL: data.email,
@@ -100,10 +103,10 @@ function ModelLogin(props) {
 
     return (
         <div className="model-login">
-            <Button type="primary" onClick={showDrawer}>
+            <Button type="primary" onClick={() => dispatch(showLogin(true))}>
                 Đăng kí/đăng nhập
             </Button>
-            <Drawer placement="right" onClose={onClose} visible={open}>
+            <Drawer placement="right" onClose={onClose} visible={logged}>
                 {onLogin ?
                     <Form
                         form={formLogin}

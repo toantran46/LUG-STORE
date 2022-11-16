@@ -3,7 +3,7 @@ import axiosClient from "./axiosClient"
 export const yeuthichApi = {
     getAll: (params) => {
         return new Promise((resolve, reject) => {
-            const url = `/yeuthichs`
+            const url = `/api/yeuthichs`
             setTimeout(async () => {
                 try {
                     const response = await axiosClient.get(url, { params });
@@ -11,13 +11,13 @@ export const yeuthichApi = {
                 } catch (error) {
                     reject(error)
                 }
-            }, 500)
+            }, 100)
         })
 
     },
     post: data => {
         return new Promise((resolve, reject) => {
-            const url = '/yeuthichs'
+            const url = '/api/yeuthichs'
             setTimeout(async () => {
                 try {
                     const response = await axiosClient.post(url, data);
@@ -26,13 +26,13 @@ export const yeuthichApi = {
                 } catch (error) {
                     reject(error)
                 }
-            }, 2000)
+            }, 100)
 
 
         })
     },
     delete: (params) => {
-        const url = `/yeuthichs/${params}`
+        const url = `/api/yeuthichs/${params}`
         return axiosClient.delete(url);
     }
 }

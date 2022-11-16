@@ -1,12 +1,12 @@
 import axiosClient from "./axiosClient"
 
 export const diachithanhvienApi = {
-    getAll: (params) => {
+    get: (ID) => {
         return new Promise((resolve, reject) => {
-            const url = `/diachithanhviens`
+            const url = `/api/diachithanhviens/${ID}`
             setTimeout(async () => {
                 try {
-                    const response = await axiosClient.get(url, { params });
+                    const response = await axiosClient.get(url);
                     resolve(response);
                 } catch (error) {
                     reject(error)
@@ -17,7 +17,7 @@ export const diachithanhvienApi = {
     },
     post: data => {
         return new Promise((resolve, reject) => {
-            const url = '/diachithanhviens'
+            const url = '/api/diachithanhviens'
             setTimeout(async () => {
                 try {
                     const response = await axiosClient.post(url, data);
@@ -35,7 +35,7 @@ export const diachithanhvienApi = {
         return new Promise((resolve, reject) => {
             setTimeout(async () => {
                 try {
-                    const url = `/diachithanhviens/${params}`
+                    const url = `/api/diachithanhviens/${params}`
                     const response = await axiosClient.patch(url, data);
                     resolve(response);
 
@@ -46,7 +46,7 @@ export const diachithanhvienApi = {
         })
     },
     delete: (params) => {
-        const url = `/diachithanhviens/${params}`
+        const url = `/api/diachithanhviens/${params}`
         return axiosClient.delete(url);
     }
 }

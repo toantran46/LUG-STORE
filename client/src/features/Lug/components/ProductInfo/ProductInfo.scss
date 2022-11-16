@@ -14,10 +14,15 @@
             color: #0d0d8b;
         }
     }
+    &__rate{
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
     &__price{
         font-size: 18px;
         align-items: center;
         margin-bottom: 10px;
+        display: flex;
         .discounted{
             color: #e9252c;
             padding-right: 5px;
@@ -42,7 +47,7 @@
     &__color{
         .swatch-list-color {
             padding-bottom: unset;
-            margin-bottom: 50px;
+            margin-bottom: 15px;
         }
     }
     &__button{
@@ -50,6 +55,14 @@
             font-size: 13px;
              background-color: #e9252c;
              font-weight: 700;
+        }
+    }
+    &__quantity{
+        padding: auto;
+        margin: 10px 0;
+        .btn-quantity{
+            padding: 10px 0;
+            display: flex;
         }
     }
 }

@@ -1,12 +1,15 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { chucvuApi } from 'api/chucvuApi';
+import { donhangApi } from 'api/donhangApi';
 import { khuyenmaiApi } from 'api/khuyenmaiApi';
 import { loaisanphamApi } from 'api/loaisanphamApi';
 import { mausacApi } from 'api/mausacApi';
 import { nhacungcapApi } from 'api/nhacungcapApi';
 import { nhanvienApi } from 'api/nhanvienApi';
+import { phieunhapApi } from 'api/phieunhapApi';
 import { sanphamApi } from 'api/sanphamApi';
 import { thanhvienApi } from 'api/thanhvienApi';
+import { thongkeApi } from 'api/thongkeApi';
 import { thuonghieuApi } from "api/thuonghieuApi";
 
 export const fetch_brands = createAsyncThunk("adminPage/fetch_brands", async (params, { rejectWithValue }) => {
@@ -109,10 +112,60 @@ export const fetch_products = createAsyncThunk("adminPage/fetch_products", async
     }
 
 })
+export const fetch_orders = createAsyncThunk("adminPage/fetch_orders", async (params, { rejectWithValue }) => {
+
+    try {
+        const { result, totalRecords } = await donhangApi.getAll(params);
+        // console.log(result);
+        return { result, totalRecords };
+
+    } catch (error) {
+        return rejectWithValue(error.respone.data)
+    }
+
+})
+export const fetch_order_undo = createAsyncThunk("adminPage/fetch_order_undo", async (params, { rejectWithValue }) => {
+
+    try {
+        const { result, totalRecords } = await donhangApi.getAll(params);
+        console.log(result);
+        return { result, totalRecords };
+
+    } catch (error) {
+        return rejectWithValue(error.respone.data)
+    }
+
+})
+export const fetch_goodsrecipi = createAsyncThunk("adminPage/fetch_goodsrecipi", async (params, { rejectWithValue }) => {
+
+    try {
+        const { result, totalRecords } = await phieunhapApi.getAll(params);
+        console.log(result);
+        return { result, totalRecords };
+
+    } catch (error) {
+        return rejectWithValue(error.respone.data)
+    }
+
+})
+export const fetch_thongkes = createAsyncThunk("adminPage/fetch_thongkes", async (params, { rejectWithValue }) => {
+
+    try {
+        const { result, totalRecords } = await thongkeApi.getAll(params);
+        // console.log(result);
+        return { result, totalRecords };
+
+    } catch (error) {
+        return rejectWithValue(error.respone.data)
+    }
+
+})
 
 const initialState = {
     loading: {},
-    data: {},
+    data: {
+        thongkes: {}
+    },
     pagination: {
         brands: {
             _limit: 10,
@@ -163,6 +216,24 @@ const initialState = {
             _totalRecord: 0
         },
         products: {
+            _limit: 10,
+            _page: 1,
+            _totalPage: 1,
+            _totalRecord: 0
+        },
+        orders: {
+            _limit: 10,
+            _page: 1,
+            _totalPage: 1,
+            _totalRecord: 0
+        },
+        order_undo: {
+            _limit: 10,
+            _page: 1,
+            _totalPage: 1,
+            _totalRecord: 0
+        },
+        goodsrecipi: {
             _limit: 10,
             _page: 1,
             _totalPage: 1,
@@ -325,6 +396,69 @@ const adminPage = createSlice({
         [fetch_products.rejected]: (state, action) => {
             state.loading.products = false;
             state.error.products = action.error;
+        },
+        // orders
+        [fetch_orders.pending]: (state, action) => {
+            state.loading.orders = true;
+        },
+        [fetch_orders.fulfilled]: (state, action) => {
+            state.loading.orders = false;
+            state.data.orders = action.payload.result.map((e, idx) => ({ ...e, key: idx }));
+
+            const totalRecords = action.payload.totalRecords;
+            // state.data.thongkes.DH_CHO_XU_LY = totalRecords;
+            state.pagination.orders._totalRecord = totalRecords;
+            state.pagination.orders._totalPage = Math.ceil(totalRecords / state.pagination.orders._limit);
+        },
+        [fetch_orders.rejected]: (state, action) => {
+            state.loading.orders = false;
+            state.error.orders = action.error;
+        },
+        // order_undo
+        [fetch_order_undo.pending]: (state, action) => {
+            state.loading.order_undo = true;
+        },
+        [fetch_order_undo.fulfilled]: (state, action) => {
+            state.loading.order_undo = false;
+            state.data.order_undo = action.payload.result.map((e, idx) => ({ ...e, key: idx }));
+
+            const totalRecords = action.payload.totalRecords;
+            state.data.thongkes.DHCHUAXULY = totalRecords;
+            state.pagination.order_undo._totalRecord = totalRecords;
+            state.pagination.order_undo._totalPage = Math.ceil(totalRecords / state.pagination.order_undo._limit);
+        },
+        [fetch_order_undo.rejected]: (state, action) => {
+            state.loading.order_undo = false;
+            state.error.order_undo = action.error;
+        },
+        // thongkes
+        [fetch_thongkes.pending]: (state, action) => {
+            state.loading.thongkes = true;
+        },
+        [fetch_thongkes.fulfilled]: (state, action) => {
+            state.loading.thongkes = false;
+            state.data.thongkes = action.payload.result;
+        },
+        [fetch_thongkes.rejected]: (state, action) => {
+            state.loading.thongkes = false;
+            state.error.thongkes = action.error;
+        },
+        // goodsrecipi
+        [fetch_goodsrecipi.pending]: (state, action) => {
+            state.loading.goodsrecipi = true;
+        },
+        [fetch_goodsrecipi.fulfilled]: (state, action) => {
+            state.loading.goodsrecipi = false;
+            state.data.goodsrecipi = action.payload.result.map((e, idx) => ({ ...e, key: idx }));
+
+            const totalRecords = action.payload.totalRecords;
+            // state.data.thongkes.DH_CHO_XU_LY = totalRecords;
+            state.pagination.goodsrecipi._totalRecord = totalRecords;
+            state.pagination.goodsrecipi._totalPage = Math.ceil(totalRecords / state.pagination.goodsrecipi._limit);
+        },
+        [fetch_goodsrecipi.rejected]: (state, action) => {
+            state.loading.goodsrecipi = false;
+            state.error.goodsrecipi = action.error;
         },
     }
 })

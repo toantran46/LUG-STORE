@@ -3,7 +3,7 @@ import axiosClient from "./axiosClient"
 export const phieunhapApi = {
     getAll: (params) => {
         return new Promise((resolve, reject) => {
-            const url = `/phieunhaps`
+            const url = `/api/phieunhaps`
             setTimeout(async () => {
                 try {
                     const response = await axiosClient.get(url, { params });
@@ -17,7 +17,7 @@ export const phieunhapApi = {
     },
     post: data => {
         return new Promise((resolve, reject) => {
-            const url = '/phieunhaps'
+            const url = '/api/phieunhaps'
             setTimeout(async () => {
                 try {
                     const response = await axiosClient.post(url, data);
@@ -35,7 +35,7 @@ export const phieunhapApi = {
         return new Promise((resolve, reject) => {
             setTimeout(async () => {
                 try {
-                    const url = `/phieunhaps/${params}`
+                    const url = `/api/phieunhaps/${params}`
                     const response = await axiosClient.patch(url, data);
                     resolve(response);
 
@@ -46,7 +46,7 @@ export const phieunhapApi = {
         })
     },
     delete: (params) => {
-        const url = `/phieunhaps/${params}`
+        const url = `/api/phieunhaps/${params}`
         return axiosClient.delete(url);
     }
 }

@@ -15,6 +15,20 @@ export const sanphamApi = {
         })
 
     },
+    get: (params) => {
+        return new Promise((resolve, reject) => {
+            const url = `/api/sanphams/${params}`
+            setTimeout(async () => {
+                try {
+                    const response = await axiosClient.get(url);
+                    resolve(response);
+                } catch (error) {
+                    reject(error)
+                }
+            }, 500)
+        })
+
+    },
     post: data => {
         return new Promise((resolve, reject) => {
             const url = '/api/sanphams'

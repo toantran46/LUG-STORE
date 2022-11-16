@@ -16,7 +16,8 @@ import Regency from './pages/Regency';
 import Employee from './pages/Employee';
 import Member from './pages/Member';
 import Color from './pages/Color';
-import { fetch_brands, fetch_colors, fetch_discounts, fetch_employees, fetch_members, fetch_products, fetch_product_types, fetch_regencys, fetch_suppliers } from './adminSlice';
+import { fetch_brands, fetch_colors, fetch_discounts, fetch_employees, fetch_goodsrecipi, fetch_members, fetch_orders, fetch_order_undo, fetch_products, fetch_product_types, fetch_regencys, fetch_suppliers, fetch_thongkes } from './adminSlice';
+import GoodsRecipi from './pages/GoodsRecipi';
 
 Admin.propTypes = {
 
@@ -54,25 +55,61 @@ function Admin(props) {
     React.useEffect(() => {
         dispatch(fetch_products({ _limit: pagination.products._limit, _page: pagination.products._page }));
     }, [pagination.products])
+    React.useEffect(() => {
+        dispatch(fetch_orders({ _limit: pagination.orders._limit, _page: pagination.orders._page }));
+    }, [pagination.orders])
+    React.useEffect(() => {
+        dispatch(fetch_goodsrecipi({ _limit: pagination.goodsrecipi._limit, _page: pagination.goodsrecipi._page }));
+    }, [pagination.goodsrecipi])
+    React.useEffect(() => {
+        dispatch(fetch_order_undo({ status: 1 }));
+    }, [pagination.orders])
+    React.useEffect(() => {
+        dispatch(fetch_thongkes());
+    }, [])
+    const { user } = useSelector(state => state.auth)
+    // console.log(user);
     return (
         <div className="admin">
             <Header />
             <div className='layout'>
                 <SideBar />
                 <div className="pages">
-                    <Routes>
-                        <Route index path='dashboard' element={<DashBoard />}></Route>
-                        <Route path='product' element={<Product />}></Route>
-                        <Route path='order' element={<Order />}></Route>
-                        <Route path='product-type' element={<ProductType />}></Route>
-                        <Route path='brand' element={<Brand />}></Route>
-                        <Route path='discount' element={<Discount />}></Route>
-                        <Route path='supplier' element={<Supplier />}></Route>
-                        <Route path='regency' element={<Regency />}></Route>
-                        <Route path='employee' element={<Employee />}></Route>
-                        <Route path='member' element={<Member />}></Route>
-                        <Route path='color' element={<Color />}></Route>
-                    </Routes>
+                    {user?.CV_KEY == 0 ?
+                        <Routes>
+                            <Route index path='dashboard' element={<DashBoard />}></Route>
+                            <Route path='product' element={<Product />}></Route>
+                            <Route path='order' element={<Order />}></Route>
+                            <Route path='product-type' element={<ProductType />}></Route>
+                            <Route path='brand' element={<Brand />}></Route>
+                            <Route path='discount' element={<Discount />}></Route>
+                            <Route path='supplier' element={<Supplier />}></Route>
+                            <Route path='regency' element={<Regency />}></Route>
+                            <Route path='employee' element={<Employee />}></Route>
+                            <Route path='member' element={<Member />}></Route>
+                            <Route path='color' element={<Color />}></Route>
+                            <Route path='goodsrecipi' element={<GoodsRecipi />}></Route>
+                        </Routes>
+                        : user?.CV_KEY == 1 ?
+                            <Routes>
+                                <Route path='product' element={<Product />}></Route>
+                                <Route path='product-type' element={<ProductType />}></Route>
+                                <Route path='brand' element={<Brand />}></Route>
+                                <Route path='supplier' element={<Supplier />}></Route>
+                                <Route path='color' element={<Color />}></Route>
+                                <Route path='goodsrecipi' element={<GoodsRecipi />}></Route>
+                            </Routes>
+                            : user?.CV_KEY == 3 ?
+                                <Routes>
+                                    <Route path='order' element={<Order />}></Route>
+                                </Routes>
+                                : user?.CV_KEY == 4 ?
+                                    <Routes>
+                                        <Route path='employee' element={<Employee />}></Route>
+                                        <Route path='member' element={<Member />}></Route>
+                                        <Route path='order' element={<Order />}></Route>
+                                    </Routes>
+                                    : ''}
                 </div>
             </div >
         </div>

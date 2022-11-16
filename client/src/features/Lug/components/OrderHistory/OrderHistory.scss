@@ -1,12 +1,74 @@
 .order-history{
     .content{
-        text-align: center;
-        padding: 20px;
-        border: 2px solid #cecbcbaa;
+        // text-align: center;
+        padding: 15px;
+        border: 2px solid #e5e5e5;
         border-radius: 8px;
-        
         .title{
             padding: 10px 0;
         }
+        .description-order{
+            background-color: #fdfdfd;
+            border-radius: 15px ;
+            box-shadow: 5px 5px #e0e0e0;
+            padding: 15px;
+            margin-bottom: 15px;
+            .title-order{
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 20px;
+                margin-top: 20px;
+                .title-right{
+                    display: flex;
+                    text-align: right;
+                    .order-time{
+                        margin-right: 100px;
+                    }
+                }
+            }
+            .box-order{
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 15px;
+                .product-color{
+                    display: flex;
+                    align-items: center;
+                }
+            }
+            .order-info{
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 10px;
+                .info-right{
+                    display: flex;  
+                    text-align: right;
+                    .shipping{
+                        margin-right: 100px;
+                    }
+                }
+            }
+            .ship-timing{
+                display: flex;
+                justify-content: right;
+                margin-bottom: 10px;
+            }
+        }
+        .custom-font-title{
+            color: #b0b0b0;
+            font-size: 16px;
+            font-weight: 250;
+        }
+        .custom-font-content{
+            color: #4f4e4e;
+            font-size: 20px;
+            font-weight: 200;
+        }
     }
+}
+.swatch-color{
+    display: inline-block;
+    width: 23px;
+    height: 23px;
+    border-radius: 50%;
+    border: 1px solid #a2a2a2;
 }

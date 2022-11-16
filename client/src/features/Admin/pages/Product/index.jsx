@@ -13,6 +13,10 @@ import { loaisanphamApi } from 'api/loaisanphamApi';
 import { thuonghieuApi } from 'api/thuonghieuApi';
 import { mausacApi } from 'api/mausacApi';
 import { sanphamApi } from 'api/sanphamApi';
+import { Label } from 'reactstrap';
+import Search from 'antd/lib/transfer/search';
+import moment from 'moment';
+import { format } from 'assets/global/FormatMoney';
 
 Product.propTypes = {
 
@@ -43,7 +47,9 @@ function Product(props) {
     const [previewOpen, setPreviewOpen] = React.useState(false);
     const [previewImage, setPreviewImage] = React.useState('');
     const [previewTitle, setPreviewTitle] = React.useState('');
-
+    const [searchValue, setSearchValue] = React.useState();
+    const [listProductSearch, setListProductSearch] = React.useState();
+    const useRef = React.useRef();
     const handleOk = () => {
         setIsModalOpen(false);
     };
@@ -82,6 +88,7 @@ function Product(props) {
             dataIndex: 'HASP_DUONGDAN',
             render: (id, row) =>
                 <Avatar src={id} shape="square" />
+
         },
         {
             title: 'Tên sản phẩm',
@@ -98,6 +105,7 @@ function Product(props) {
         {
             title: 'Giá gốc',
             dataIndex: 'SP_GIAGOC',
+            render: (row) => format(row) + 'đ',
         },
         {
             title: 'Kích thước',
@@ -106,12 +114,10 @@ function Product(props) {
         {
             title: 'Chất liệu',
             dataIndex: 'SP_CHATLIEU',
-            width: 100,
         },
         {
             title: 'Số ngăn',
             dataIndex: 'SP_SONGAN',
-            width: 300
         },
         {
             title: 'Cân nặng',
@@ -120,23 +126,24 @@ function Product(props) {
         {
             title: 'Tính năng',
             dataIndex: 'SP_TINHNANG',
-            width: 500,
         },
         {
             title: 'Trạng thái',
-            dataIndex: 'SP_TRANGTHAI',
+            dataIndex: 'TONGSOLUONGKHO',
             render: (id, row) => <div>
-                <Tag color='success'>{id}</Tag>
+                {id == 0 ? <Tag color='error'>Hết hàng</Tag>
+                    : <Tag color='success'>Còn hàng</Tag>}
+
             </div>
         },
         {
             title: 'Ngày tạo',
             dataIndex: 'SP_NGAYTAO',
+            render: (id, row) => <div>{moment(id).format('MMMM Do YYYY, h:mm:ss')}</div>
         },
         {
             title: 'Thao tác',
             dataIndex: 'SP_MA',
-            // width: 100,
             render: (id, row) =>
                 <div className="changes">
                     <Button
@@ -249,7 +256,7 @@ function Product(props) {
         </div>
     );
     const handleUpload = (list, fileList) => {
-        if (list.type == "image/png" || list.type == "image/jpg" || list.type == "image/jpeg") {
+        if (list.type === "image/png" || list.type === "image/jpg" || list.type === "image/jpeg") {
             return false
         }
         else {
@@ -265,6 +272,7 @@ function Product(props) {
                 id: e.colorId,
                 soluong: e.soLuongSp,
                 soluonganh: e.anhSp.length,
+                anhcu: e.anhSp?.filter(file => file.url).map(file => file.url),
             }))
             let images = []
             isColorsInfo?.forEach((e) => {
@@ -277,17 +285,19 @@ function Product(props) {
             images.forEach((file) => {
                 data.append('HASP_DUONGDAN', file)
             })
-            console.log(images);
+            // console.log(images);
             data.append('TEN', values.SP_TEN)
             data.append('MALOAI', values.LSP_MALOAI)
             data.append('MATHUONGHIEU', values.TH_MATHUONGHIEU)
             data.append('GIAGOC', values.SP_GIAGOC)
+            data.append('GIABAN', values.SP_GIABAN)
             data.append('CHATLIEU', values.SP_CHATLIEU)
             data.append('KICHTHUOC', values.SP_KICHTHUOC)
             data.append('CANNANG', values.SP_CANNANG)
             data.append('SONGAN', values.SP_SONGAN)
             data.append('TINHNANG', values.SP_TINHNANG)
-            // console.log(rowSelected);
+
+            console.log(color);
             const { message } = !isEdit ? await sanphamApi.post(data) : await sanphamApi.update(rowSelected.SP_MA, data);
             await dispatch(fetch_products({ _limit: pagination._limit, _page: pagination._page }));
             setIsLoading(false);
@@ -296,7 +306,7 @@ function Product(props) {
 
         } catch (error) {
             setIsLoading(false);
-            toastError(error.response.data.message);
+            toastError('Đã có lỗi trong quá trình upload ảnh, xin thử lại' + error.response.data.message);
         }
     }
 
@@ -319,7 +329,7 @@ function Product(props) {
             return index === -1 ?
                 ({
                     colorId: data,
-                    soLuongSp: null,
+                    soLuongSp: 1,
                     anhSp: null,
                 })
                 :
@@ -341,7 +351,20 @@ function Product(props) {
             return newColorInfo;
         })
     }
-
+    const onSearch = (e) => {
+        setSearchValue(e.target.value)
+    }
+    React.useEffect(() => {
+        if (useRef.current) clearTimeout(useRef.current);
+        useRef.current = setTimeout(() => {
+            const fetch_search_product = async () => {
+                const { result } = await sanphamApi.getAll({ searchBy: searchValue })
+                // console.log(result)
+                setListProductSearch(result);
+            }
+            fetch_search_product();
+        }, 500)
+    }, [searchValue])
     React.useEffect(() => {
         const fetch_product_types = async () => {
             try {
@@ -384,13 +407,16 @@ function Product(props) {
         fetch_product_types();
     }, [])
 
-
+    // console.log(isColorsInfo);
 
     return (
         <div className='product'>
             <div className="content">
                 <div className="title-header">
                     <h4>Quản lý sản phẩm</h4>
+                    <div className="search">
+                        <Search placeholder="Tìm kiếm sản phẩm" onChange={onSearch} size='small' style={{ width: 400 }} enterButton />
+                    </div>
                     <div className="add-sp">
                         <Button
                             onClick={handleAdd}
@@ -446,13 +472,19 @@ function Product(props) {
                                         </Form.Item>
                                         <Form.Item
                                             name="SP_GIAGOC"
-                                            label="Giá"
+                                            label="Giá gốc"
                                             rules={[
                                                 {
                                                     required: true,
                                                     message: "Giá không được bỏ trống",
                                                 },
                                             ]}
+                                        >
+                                            <InputNumber style={{ width: '100%' }} />
+                                        </Form.Item>
+                                        <Form.Item
+                                            name="SP_GIABAN"
+                                            label="Giá bán"
                                         >
                                             <InputNumber style={{ width: '100%' }} />
                                         </Form.Item>
@@ -465,20 +497,10 @@ function Product(props) {
                                         </Form.Item>
                                         {isColorsInfo?.map((data, indx) =>
                                             <div>
-                                                <Form.Item
-                                                    label="Số lượng"
-                                                    name={`quantity + ${indx}`}
-                                                    initialValue={data.soLuongSp}
-                                                    rules={[
-                                                        {
-                                                            required: true,
-                                                            message: "Số lượng không được bỏ trống",
-                                                        }
-                                                    ]}
-                                                >
-                                                    <Input onChange={({ target }) => handleChangeQuantity(target.value, indx)} />
-
-                                                </Form.Item>
+                                                <Label>Số lượng:</Label>
+                                                <Input type='number' disabled value={data.soLuongSp} onChange={({ target }) => handleChangeQuantity(target.value, indx)} />
+                                                <br />
+                                                <br />
                                                 <Form.Item>
                                                     <Upload
                                                         action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
@@ -545,24 +567,25 @@ function Product(props) {
                             </Form>
                         </Modal>
                     </div>
+
                 </div>
+                <p>Tổng số: {products?.length < pagination?._limit ? products.length : pagination._limit}/ {pagination._totalRecord} bản ghi</p>
                 <div className="product-table">
-                    <p>Tổng số: {products?.length < pagination?._limit ? products.length : pagination._limit}/ {pagination._totalRecord} bản ghi</p>
                     <Table
                         columns={columns}
-                        dataSource={products}
+                        dataSource={searchValue ? listProductSearch : products}
                         pagination={false}
                     />
                     <div className="mt-3">
-                        <Pagination
-                            pageSize={1}
-                            current={pagination._page}
-                            total={pagination._totalPage}
-                            onChange={(page) => dispatch(savePagination({ screen: 'products', page }))}
-                        >
-                        </Pagination>
                     </div>
                 </div>
+                <Pagination
+                    pageSize={1}
+                    current={pagination._page}
+                    total={pagination._totalPage}
+                    onChange={(page) => dispatch(savePagination({ screen: 'products', page }))}
+                >
+                </Pagination>
             </div>
         </div>
     );

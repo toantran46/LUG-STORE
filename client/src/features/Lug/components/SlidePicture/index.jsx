@@ -12,10 +12,13 @@ import "swiper/css/thumbs";
 import { FreeMode, Navigation, Thumbs } from "swiper";
 
 SlidePicture.propTypes = {
-
+    listImages: PropTypes.array,
 };
-
+SlidePicture.defaultProps = {
+    listImages: []
+}
 function SlidePicture(props) {
+    const { listImages } = props;
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
     return (
         <div className='slide-picture'>
@@ -27,19 +30,33 @@ function SlidePicture(props) {
                 modules={[FreeMode, Navigation, Thumbs]}
                 className="mySwiper2"
             >
-                <SwiperSlide>
-                    <img src="https://bizweb.sapocdn.net/100/349/716/products/8689-grey-18-s-square-1.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://bizweb.sapocdn.net/100/349/716/products/8689-grey-18-s-square-2.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://bizweb.sapocdn.net/100/349/716/products/8689-grey-18-s-square-3.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://bizweb.sapocdn.net/100/349/716/products/8689-grey-18-s-ben-trong.jpg" />
-                </SwiperSlide>
+                {
+                    listImages?.map((data) =>
+                        <SwiperSlide>
+                            <img src={data} />
+                        </SwiperSlide>
+                    )
+                }
             </Swiper>
+            <Swiper
+                onSwiper={setThumbsSwiper}
+                loop={true}
+                spaceBetween={10}
+                slidesPerView={4}
+                freeMode={true}
+                watchSlidesProgress={true}
+                modules={[FreeMode, Navigation, Thumbs]}
+                className="mySwiper"
+            >
+                {
+                    listImages?.map((data) =>
+                        <SwiperSlide>
+                            <img src={data} />
+                        </SwiperSlide>
+                    )
+                }
+            </Swiper>
+
         </div >
     );
 }

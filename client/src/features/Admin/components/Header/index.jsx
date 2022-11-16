@@ -3,13 +3,17 @@ import PropTypes from 'prop-types';
 import { LogoutOutlined } from '@ant-design/icons';
 import './Header.scss';
 import { Link } from 'react-router-dom';
-import { Avatar, Space } from 'antd';
+import { Avatar, Button, Space } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from 'app/authSlice';
 
 Header.propTypes = {
 
 };
 
 function Header(props) {
+    const dispatch = useDispatch();
+    const { user } = useSelector(state => state.auth)
     return (
         <div className='head'>
             <div className="logo">
@@ -20,11 +24,11 @@ function Header(props) {
             <div className="log-out">
                 <Space>
                     <div className="avatar">
-                        <Avatar src="https://joeschmoe.io/api/v1/random" />
+                        <p style={{ fontSize: '17px', color: '#1890FF', fontWeight: '500' }}>{user?.NV_HOTEN}</p>
                     </div>
                 </Space>
                 <span className='icon-logout'>
-                    Đăng xuất
+                    <Button type='danger' onClick={() => dispatch(logout())}>Đăng xuất <LogoutOutlined /></Button>
                 </span>
 
             </div>

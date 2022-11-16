@@ -5,6 +5,26 @@
             justify-content: space-between;
             align-items: center;
             padding: 5px 10px;
-        }   
+        }
+        .flex{
+            display: flex;
+            justify-content: space-between;
+            .filter-date{
+                display: flex;
+                &__date-from{
+                    margin-right: 8px;
+                }
+                &__date-to{
+                    margin-right: 8px;
+                }
+            }
+        }
     }
+}
+.swatch-color{
+    display: inline-block;
+    width: 23px;
+    height: 23px;
+    border-radius: 50%;
+    border: 1px solid #a2a2a2;
 }

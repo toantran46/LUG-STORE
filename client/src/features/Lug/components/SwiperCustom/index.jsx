@@ -27,7 +27,7 @@ function SwiperCustom(props) {
                 slidesPerView={slidesPerView}
                 spaceBetween={spaceBetween}
                 slidesPerGroup={1}
-                loop={true}
+                // loop={true}
                 loopFillGroupWithBlank={true}
                 navigation={true}
                 // pagination={{

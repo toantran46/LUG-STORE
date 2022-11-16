@@ -11,7 +11,7 @@ export const binhluanApi = {
                 } catch (error) {
                     reject(error)
                 }
-            }, 500)
+            }, 1000)
         })
 
     },
@@ -26,7 +26,7 @@ export const binhluanApi = {
                 } catch (error) {
                     reject(error)
                 }
-            }, 2000)
+            }, 1000)
 
 
         })
@@ -42,7 +42,7 @@ export const binhluanApi = {
                 } catch (error) {
                     reject(error)
                 }
-            }, 2000)
+            }, 1000)
         })
     },
     delete: (params) => {

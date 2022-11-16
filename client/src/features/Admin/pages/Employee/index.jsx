@@ -83,7 +83,6 @@ function Employee(props) {
     const {
         data: { employees },
         pagination: { employees: pagination } } = useSelector(state => state.adminInfo);
-
     const initialValues = {
         CV_MA: '',
         NV_EMAIL: '',

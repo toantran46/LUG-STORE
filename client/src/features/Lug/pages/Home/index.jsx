@@ -6,6 +6,9 @@ import './Home.scss';
 import { Drawer } from 'antd';
 import TopBags from 'features/Lug/components/TopBags';
 import Banner from 'features/Lug/components/Banner';
+import TopLugs from 'features/Lug/components/TopLugs';
+import TopAccsessories from 'features/Lug/components/TopAccsessories';
+import { Link } from 'react-router-dom';
 
 Home.propTypes = {
 
@@ -22,25 +25,25 @@ function Home(props) {
                 </div>
                 <TopBags />
                 <div className="moreProducts">
-                    <button className='btn btn-danger btn-lg'>XEM THÊM SẢN PHẨM KHÁC</button>
+                    <Link to={'/category'} >  <button className='btn btn-danger btn-lg'>XEM THÊM SẢN PHẨM KHÁC</button></Link>
                 </div>
             </div>
             <div className="topProducts">
                 <div className="blackLine">
                     <p>TOP TÚI XÁCH ĐƯỢC YÊU THÍCH</p>
                 </div>
-                <TopBags />
+                <TopLugs />
                 <div className="moreProducts">
-                    <button className='btn btn-danger btn-lg'>XEM THÊM SẢN PHẨM KHÁC</button>
+                    <Link to={'/category'} ><button className='btn btn-danger btn-lg'>XEM THÊM SẢN PHẨM KHÁC</button></Link>
                 </div>
             </div>
             <div className="topProducts">
                 <div className="blackLine">
                     <p>TOP PHỤ KIỆN ĐƯỢC YÊU THÍCH</p>
                 </div>
-                <TopBags />
+                <TopAccsessories />
                 <div className="moreProducts">
-                    <button className='btn btn-danger btn-lg'>XEM THÊM SẢN PHẨM KHÁC</button>
+                    <Link to={'/category'} ><button className='btn btn-danger btn-lg'>XEM THÊM SẢN PHẨM KHÁC</button> </Link>
                 </div>
             </div>
 

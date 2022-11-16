@@ -1,3 +1,40 @@
 .comment-rate{
     margin-top: 10px;
+    .rate-point{
+        display: flex;
+        align-items: center;
+        .point{
+            color: #fe8c23;
+            font-weight: bold;
+            font-size: 22px;
+            margin-top: 2px;
+            margin-right: 10px;
+        }
+        .rate-total{
+            margin-top: 2px;
+        }
+    }
+    .rating-list{
+        .number-star{
+            margin-right: 10px;
+        }
+        .ant-progress-bg{
+            background-color: #fe8c23;
+        }
+        align-items: center;
+        li{
+            
+            display: flex;
+            .progress-star{
+                width: 300px;
+            }
+        }
+    }
+    .comment{
+        border: 1px solid #d9d9d9;
+        border-radius: 8px;
+        padding-top: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
 }

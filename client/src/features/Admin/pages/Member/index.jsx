@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toastError, toastSucsess } from 'utils/notification';
 import { fetch_members, savePagination } from 'features/Admin/adminSlice';
 import { thanhvienApi } from 'api/thanhvienApi';
+import Search from 'antd/lib/transfer/search';
 Member.propTypes = {
 
 };
@@ -195,6 +196,9 @@ function Member(props) {
             <div className="content-member">
                 <div className="title-header">
                     <h4>Quản lý thành viên </h4>
+                    <div className="search">
+                        <Search placeholder="Tìm kiếm thành viên" onSearch={''} style={{ width: '100%' }} enterButton />
+                    </div>
                     <div className="add-sp">
                         <Modal
                             title="Thành viên"

@@ -56,7 +56,7 @@ export const thanhvienApi = {
                 } catch (error) {
                     reject(error)
                 }
-            }, 1500)
+            }, 200)
         })
     },
     getNewToken: (refreshToken) => {
