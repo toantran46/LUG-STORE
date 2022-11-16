@@ -6,7 +6,7 @@ module.exports = {
         try {
             const { _limit, _page } = req.query;
             const sql = `SELECT * FROM diachithanhvien DCTV, thanhvien TV
-                         WHERE DCTV.TV_EMAIL = TV.TV_EMAIL
+                         WHERE DCTV.TV_ID = TV.TV_ID
                         ${(_page && _limit) ? ' LIMIT ' + _limit + ' OFFSET ' + _limit * (_page - 1) : ''}`;
             const diachithanhviens = await executeQuery(sql);
             // console.log(sql);
@@ -26,11 +26,11 @@ module.exports = {
     },
     get: async (req, res) => {
         try {
-            const { IDdiachithanhvien } = req.params;
-            const sql = `SELECT * FROM diachithanhvien WHERE DCTV_MA = '${IDdiachithanhvien}'`;
+            const { TV_ID } = req.params;
+            const sql = `SELECT * FROM diachithanhvien WHERE TV_ID = '${TV_ID}'`;
             const diachithanhviens = await executeQuery(sql);
             res.json({
-                result: diachithanhviens[0],
+                result: diachithanhviens,
                 message: 'Success'
             });
         } catch (error) {
@@ -40,11 +40,11 @@ module.exports = {
     },
     post: async (req, res) => {
         try {
-            const { DCTV_TINH, TV_EMAIL, DCTV_HUYEN, DCTV_XA, DCTV_SONHA } = req.body;
+            const { TV_ID, DCTV_MATINH, DCTV_MAHUYEN, DCTV_MAXA, DCTV_TENTINH, DCTV_TENHUYEN, DCTV_TENXA, DCTV_SONHA } = req.body;
             const DCTV_MA = randomString();
 
-            const sql = `INSERT INTO diachithanhvien(DCTV_MA, TV_EMAIL, DCTV_TINH, DCTV_HUYEN, DCTV_XA, DCTV_SONHA )
-            VALUES('${DCTV_MA}','${TV_EMAIL}','${DCTV_TINH}','${DCTV_HUYEN}','${DCTV_XA}','${DCTV_SONHA}')`;
+            const sql = `INSERT INTO diachithanhvien(DCTV_MA, TV_ID, DCTV_MATINH, DCTV_MAHUYEN, DCTV_MAXA, DCTV_TENTINH, DCTV_TENHUYEN, DCTV_TENXA, DCTV_SONHA )
+            VALUES('${DCTV_MA}','${TV_ID}','${DCTV_MATINH}','${DCTV_MAHUYEN}','${DCTV_MAXA}','${DCTV_TENTINH}','${DCTV_TENHUYEN}','${DCTV_TENXA}','${DCTV_SONHA}')`;
             await executeQuery(sql);
             res.json({ message: 'Thêm địa chỉ thành công.' });
         } catch (error) {

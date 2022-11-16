@@ -27,6 +27,8 @@ const binhluanRouter = require('./routes/binhluan.route');
 const phieunhapRouter = require('./routes/phieunhap.route');
 const thanhvienRouter = require('./routes/thanhvien.route');
 const sanphamRouter = require('./routes/sanpham.route');
+const donhangRouter = require('./routes/donhang.route');
+const thongkeRouter = require('./routes/thongke.route');
 
 app.use('/api/khuyenmais', khuyenmaiRouter);
 app.use('/api/thuonghieus', thuonghieuRouter);
@@ -41,6 +43,8 @@ app.use('/api/binhluans', binhluanRouter);
 app.use('/api/phieunhaps', phieunhapRouter);
 app.use('/api/thanhviens', thanhvienRouter);
 app.use('/api/sanphams', sanphamRouter);
+app.use('/api/donhangs', donhangRouter);
+app.use('/api/thongkes', thongkeRouter);
 
 
 
@@ -52,5 +56,5 @@ conn.connect(function (err) {
 
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
+    console.log(`App listening on port ${port}`)
 })

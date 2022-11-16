@@ -1,11 +1,12 @@
 const { executeQuery, checkIsExist, executeUpdateQuery } = require("../mysql");
 var randomString = require('random-string');
+const { getNow } = require("../globals/globals");
 
 module.exports = {
     getAlls: async (req, res) => {
         try {
             const { _limit, _page } = req.query;
-            const sql = `SELECT A.PN_MA, A.NV_ID, B.NV_HOTEN, C.NCC_TEN, A.PN_TONGTIEN, A.PN_GHICHU
+            const sql = `SELECT A.PN_MA, A.NV_ID, B.NV_HOTEN, C.NCC_TEN, A.PN_TONGTIEN, A.PN_GHICHU, A.PN_NGAYTAO
                         FROM phieunhap A, nhanvien B, nhacungcap C
                         WHERE  A.NV_ID = B.NV_ID
                                 AND A.NCC_MA = C.NCC_MA
@@ -15,16 +16,16 @@ module.exports = {
             const sql_count = `SELECT COUNT(PN_MA) as total FROM phieunhap A, nhanvien B, nhacungcap C
                                 WHERE  A.NV_ID = B.NV_ID
                                         AND A.NCC_MA = C.NCC_MA`;
-            console.log(sql_count);
+            // console.log(sql_count);
             const data = await executeQuery(sql_count);
 
             //CHI TIẾT PHIẾU NHẬP
             const processes = phieunhaps?.map((sp, idx) => {
                 return new Promise(async (resolve, reject) => {
                     try {
-                        const sql_detail = `SELECT A.SP_MA, A.CTN_SOLUONG, A.CTN_STONGTIEN, B.SP_TEN 
-                                            FROM chitietphieunhap A , sanpham B
-                                            WHERE A.SP_MA = B.SP_MA AND A.PN_MA='${sp.PN_MA}'`;
+                        const sql_detail = `SELECT A.SP_MA, A.CTN_SOLUONG, A.CTN_TONGTIEN, B.SP_TEN, C.MS_TENMAU
+                                            FROM chitietphieunhap A , sanpham B, mausac C
+                                            WHERE A.SP_MA = B.SP_MA AND A.PN_MA='${sp.PN_MA}' AND C.MS_MAMAU = A.MS_MAMAU`;
                         phieunhaps[idx].SAN_PHAM = await executeQuery(sql_detail);
                         resolve(true);
                     } catch (error) {
@@ -38,7 +39,7 @@ module.exports = {
 
             res.json({
                 result: phieunhaps,
-                records: data[0].total,
+                totalRecords: data[0].total,
                 message: 'Success'
             });
         } catch (error) {
@@ -62,22 +63,27 @@ module.exports = {
     },
     post: async (req, res) => {
         try {
-            const { TV_ID, NCC_MA, PN_TONGTIEN, PN_GHICHU } = req.body;
-            const { SAN_PHAM } = req.body;
+            const { NV_ID } = req.user?.data;
+            // console.log(req.user);
+            const { NCC_MA, PN_TONGTIEN, PN_GHICHU } = req.body;
+            let { SANPHAM } = req.body;
+            SANPHAM = JSON.parse(SANPHAM);
             const PN_MA = randomString();
 
-            const sql = `INSERT INTO phieunhap (PN_MA, TV_ID, NCC_MA, PN_TONGTIEN, PN_GHICHU, )
-            VALUES('${PN_MA}', '${TV_ID}', '${NCC_MA}', '${PN_TONGTIEN}', '${PN_GHICHU || ''}')`;
+            const sql = `INSERT INTO phieunhap (PN_MA, NV_ID, NCC_MA, PN_TONGTIEN, PN_GHICHU)
+            VALUES('${PN_MA}', '${NV_ID}', '${NCC_MA}', '${PN_TONGTIEN}', '${PN_GHICHU}')`;
             await executeQuery(sql);
-
+            // console.log(sql)
             //POST CHI TIET PHIEU NHAP
-            const processes = SAN_PHAM?.map(sp => {
+            const CTN_NGAYNHAP = getNow();
+            const processes = SANPHAM?.map(sp => {
                 return new Promise(async (resolve, reject) => {
                     try {
-                        const sql_detail = `INSERT INTO chitietphieunhap(PN_MA, SP_MA, CTN_TONGTIEN, CTN_SOLUONG, CTN_NGAYNHAP)
-                                        VALUES ('${PN_MA}','${sp.SP_MA}','${sp.CTN_TONGTIEN}','${sp.CTN_SOLUONG}','${getNow()}')`;
+                        const sql_detail = `INSERT INTO chitietphieunhap(PN_MA, SP_MA, CTN_TONGTIEN, CTN_SOLUONG, CTN_NGAYNHAP, MS_MAMAU)
+                                        VALUES ('${PN_MA}','${sp.SP_MA}','${sp.CTN_TONGTIEN}','${sp.CTN_SOLUONG}','${CTN_NGAYNHAP}','${sp.MS_MAMAU}')`;
                         await executeQuery(sql_detail);
                         console.log({ status: 'Done: ' + sp.SP_MA })
+                        // console.log(sql_detail);
                         resolve(true);
                     } catch (error) {
                         console.log({ error })

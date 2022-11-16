@@ -5,16 +5,15 @@ module.exports = {
     getAlls: async (req, res) => {
         try {
             const { _limit, _page } = req.query;
-            const sql = `SELECT A.YT_MA, A.SP_MA, B.SP_TEN, B.SP_GIA, C.HASP_DUONGDAN 
-                        FROM yeuthich A, sanpham B, hinhanhsanpham C
-                        WHERE A.TV_ID = '${req.body.TV_ID}'
-                        AND A.SP_MA = B.SP_MA
-                        AND B.SP_MA = C.SP_MA
+            const { TV_ID } = req.user?.data;
+            // console.log(TV_ID);
+            const sql = `SELECT * FROM yeuthich WHERE TV_ID = '${TV_ID}'
                         ${(_page && _limit) ? ' LIMIT ' + _limit + ' OFFSET ' + _limit * (_page - 1) : ''}`;
             const yeuthichs = await executeQuery(sql);
 
             res.json({
                 result: yeuthichs,
+                // totalRecords: yeuthichs[0],
                 message: 'Success'
             });
         } catch (error) {
@@ -40,9 +39,10 @@ module.exports = {
         try {
             const { SP_MA } = req.body;
             const YT_MA = randomString();
-
+            const { TV_ID } = req.user?.data;
             const sql = `INSERT INTO yeuthich (YT_MA, TV_ID, SP_MA )
-            VALUES('${YT_MA}', '${req.body.TV_ID}', '${SP_MA}')`;
+            VALUES('${YT_MA}', '${TV_ID}', '${SP_MA}')`;
+            // console.log(sql)
             await executeQuery(sql);
             res.json({ message: 'Thêm yêu thích thành công.' });
         } catch (error) {
@@ -73,6 +73,7 @@ module.exports = {
 
             const sql = `DELETE FROM yeuthich WHERE YT_MA = '${IDyeuthich}'`;
             await executeQuery(sql);
+            // console.log(sql)
 
             res.json({ message: 'Xóa yêu thích thành công.' });
         } catch (error) {

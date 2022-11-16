@@ -47,7 +47,7 @@ module.exports = {
             console.log(req.body);
             const avatarUrl = req.file?.path || TV_AVATAR;
             const MAT_KHAU_HASHED = await hashString(MATKHAU);
-            const sql = `INSERT INTO thanhvien(TV_ID, TV_MATKHAU, TV_HOTEN, TV_GIOITINH, TV_DIACHI, TV_SODIENTHOAI, TV_AVATAR, TV_EMAIL )
+            const sql = `INSERT INTO thanhvien(TV_ID, MATKHAU, TV_HOTEN, TV_GIOITINH, TV_DIACHI, TV_SODIENTHOAI, TV_AVATAR, TV_EMAIL )
                         VALUES('${TV_ID}','${MAT_KHAU_HASHED}','${TV_HOTEN}','${TV_GIOITINH}','${TV_DIACHI}','${TV_SODIENTHOAI}','${avatarUrl || ""}','${TV_EMAIL}')`;
             // console.log(sql);
             await executeQuery(sql);
@@ -65,7 +65,7 @@ module.exports = {
 
             let data = { ...req.body };
             const avatarUrl = req.file?.path;
-            console.log(avatarUrl);
+            // console.log(avatarUrl);
             // return;
             data = avatarUrl ? { ...data, TV_AVATAR: avatarUrl } : data
 
@@ -163,18 +163,20 @@ module.exports = {
     userInfoLoginSocial: async (req, res) => {
         try {
             const { TV_HOTEN, TV_SODIENTHOAI, TV_EMAIL, TV_AVATAR, TV_LOAITAIKHOAN } = req.body;
-            const isExist = await checkIsExist('thanhvien', `TV_LOAITAIKHOAN = 'google_mxh' OR TV_LOAITAIKHOAN = 'facebook_mxh' AND TV_EMAIL`, TV_EMAIL);
+            const isExist = await checkIsExist('thanhvien', `TV_LOAITAIKHOAN = '${TV_LOAITAIKHOAN}' AND TV_EMAIL`, TV_EMAIL);
             let sql;
             if (isExist) {
-                sql = `UPDATE thanhvien SET ? WHERE TV_LOAITAIKHOAN = 'google_mxh' OR TV_LOAITAIKHOAN = 'facebook_mxh' AND TV_EMAIL='${TV_EMAIL}'`;
+                sql = `UPDATE thanhvien SET ? WHERE TV_LOAITAIKHOAN = '${TV_LOAITAIKHOAN}' AND TV_EMAIL='${TV_EMAIL}'`;
+                console.log(sql)
                 await executeUpdateQuery(sql, { TV_HOTEN, TV_SODIENTHOAI, TV_EMAIL, TV_AVATAR, TV_LOAITAIKHOAN });
             } else {
                 const TV_ID = randomString();
                 sql = `INSERT INTO thanhvien(TV_ID,TV_HOTEN, TV_SODIENTHOAI, TV_EMAIL, TV_AVATAR, TV_LOAITAIKHOAN) VALUES ('${TV_ID}','${TV_HOTEN}','${TV_SODIENTHOAI}','${TV_EMAIL}','${TV_AVATAR}','${TV_LOAITAIKHOAN}')`;
+                console.log(sql)
                 await executeQuery(sql);
             }
 
-            const sql_getInfo = `SELECT * FROM thanhvien WHERE TV_LOAITAIKHOAN = 'google_mxh' OR TV_LOAITAIKHOAN = 'facebook_mxh' AND TV_EMAIL='${TV_EMAIL}'`;
+            const sql_getInfo = `SELECT * FROM thanhvien WHERE TV_LOAITAIKHOAN = '${TV_LOAITAIKHOAN}' AND TV_EMAIL='${TV_EMAIL}'`;
             const data = await executeQuery(sql_getInfo);
             const user = data[0];
             console.log({ sql_getInfo, user });

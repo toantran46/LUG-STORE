@@ -49,7 +49,7 @@ module.exports = {
 
             const MAT_KHAU_HASHED = await hashString(MATKHAU);
 
-            const sql = `INSERT INTO nhanvien(NV_ID, CV_MA, NV_MATKHAU, NV_HOTEN, NV_GIOITINH, NV_DIACHI, NV_SODIENTHOAI,NV_EMAIL )
+            const sql = `INSERT INTO nhanvien(NV_ID, CV_MA, MATKHAU, NV_HOTEN, NV_GIOITINH, NV_DIACHI, NV_SODIENTHOAI,NV_EMAIL )
             VALUES('${NV_ID}','${CV_MA}', '${MAT_KHAU_HASHED}','${NV_HOTEN}','${NV_GIOITINH}','${NV_DIACHI}','${NV_SODIENTHOAI}','${NV_EMAIL}')`;
             await executeQuery(sql);
             res.json({ message: 'Thêm nhân viên thành công.' });
